@@ -2,8 +2,11 @@ package com.example.testsudoku;
 
 import android.graphics.Color;
 import android.os.Bundle;
+import android.text.Editable;
 import android.text.InputFilter;
 import android.text.InputType;
+import android.text.TextWatcher;
+import android.util.Log;
 import android.view.Gravity;
 import android.widget.EditText;
 import android.widget.GridLayout;
@@ -18,12 +21,14 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
 
 public class MainActivity extends AppCompatActivity {
     EditText[][] sudokuCells = new EditText[9][9];
+    EditText[][] checkResult = new EditText[9][9];
     Random random = new Random();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,7 +64,6 @@ public class MainActivity extends AppCompatActivity {
                 EditText editText = new EditText(this);
                 GridLayout.LayoutParams params = new GridLayout.LayoutParams();
                 params.width = GridLayout.LayoutParams.WRAP_CONTENT;
-                ;
                 params.height = GridLayout.LayoutParams.WRAP_CONTENT;
                 params.columnSpec = GridLayout.spec(col, 1f);
                 params.rowSpec = GridLayout.spec(row, 1f);
@@ -74,11 +78,52 @@ public class MainActivity extends AppCompatActivity {
 
                 // Lưu EditText vào mảng
                 sudokuCells[row][col] = editText;
+                checkResult[row][col] = editText;
+                editText.addTextChangedListener(new TextWatcher() {
+                    @Override
+                    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                        // Xử lý sự kiện trước khi nội dung thay đổi
+                    }
 
+                    @Override
+                    public void onTextChanged(CharSequence s, int start, int before, int count) {
+                        // Xử lý khi nội dung đang thay đổi
+                        boolean finished = true;
+
+                        // Duyệt qua tất cả các ô trong lưới 9x9
+                        for (int i = 0; i < 9; i++) {
+                            for (int j = 0; j < 9; j++) {
+
+                                String checkText = checkResult[i][j].getText().toString().trim();
+                                String sudokuText = sudokuCells[i][j].getText().toString().trim();
+
+                                // Kiểm tra nếu ô nào chưa khớp
+                                if (!checkText.equals(sudokuText) || checkText.isEmpty()) {
+                                    finished = false;
+                                    break;
+                                }
+                            }
+                            if (!finished) {
+                                break;
+                            }
+                        }
+
+                        // Nếu tất cả các ô đều khớp, hiển thị "WIN!"
+                        if (finished) {
+                            tv.setText("WIN!");
+                        } else {
+                            tv.setText("");  // Nếu chưa hoàn thành, có thể xóa thông báo "WIN!"
+                        }
+                    }
+
+
+                    @Override
+                    public void afterTextChanged(Editable s) {
+                    }
+                });
                 sudokuGrid.addView(editText);
             }
         }
-
         LinearLayout mainLayout = findViewById(R.id.main_layout);
         mainLayout.addView(sudokuGrid);
         // Tạo và hiển thị bảng Sudoku
@@ -142,6 +187,7 @@ public class MainActivity extends AppCompatActivity {
                 do {
                     num = randomGenerator(9); // Tạo số ngẫu nhiên từ 1 đến 9
                 } while (!UnusedInBox(row, col, num)); // Kiểm tra số có trùng lặp trong ô vuông 3x3
+                checkResult[row + i][col + j].setText(String.valueOf(num));
                 sudokuCells[row + i][col + j].setText(String.valueOf(num)); // Đặt số vào EditText
             }
         }
@@ -187,6 +233,8 @@ public class MainActivity extends AppCompatActivity {
                     return true;
                 }
                 sudokuCells[i][j].setText(""); // Reset lại ô nếu số không hợp lệ
+                checkResult[i][j].setText(""); // Reset lại ô nếu số không hợp lệ
+
             }
         }
         return false;
@@ -198,7 +246,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void removeNumbers() {
-        int count = 20; // Số lượng ô muốn xóa
+        int count = 30; // Số lượng ô muốn xóa
         while (count != 0) {
             int cellId = randomGenerator(81) - 1; // Lấy ngẫu nhiên 1 ô
             int i = cellId / 9; // Tính hàng của ô
