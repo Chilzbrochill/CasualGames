@@ -338,26 +338,26 @@ public class FlipCard extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_flip_card);
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
 
-//        CreateTable();
-//
-//        Handler handler = new Handler();
-//
-//        // Thực hiện hàm sau 3 giây
-//        handler.postDelayed(new Runnable() {
-//            @Override
-//            public void run() {
-//                // Hàm sẽ được gọi sau 3 giây
-//                StartGame();
-//            }
-//        }, 2000);
-//
-//        AddListennerToCard();
+        CreateTable();
+
+        Handler handler = new Handler();
+
+        // Thực hiện hàm sau 3 giây
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                // Hàm sẽ được gọi sau 3 giây
+                StartGame();
+            }
+        }, 2000);
+
+        AddListennerToCard();
     }
 }
