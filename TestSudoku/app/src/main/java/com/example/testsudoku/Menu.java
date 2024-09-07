@@ -24,10 +24,29 @@ public class Menu extends AppCompatActivity {
             return insets;
         });
         ImageView sudoku = findViewById(R.id.img_Sudoku);
+        ImageView flipcard = findViewById(R.id.img_FlipCard);
+        ImageView caro = findViewById(R.id.img_Caro);
+
         sudoku.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent i = new Intent(Menu.this, SudokuMenu.class);
+                startActivity(i);
+            }
+        });
+
+        flipcard.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent(Menu.this, FlipCard.class);
+                startActivity(i);
+            }
+        });
+
+        caro.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent(Menu.this, menu_tictactoe.class);
                 startActivity(i);
             }
         });
