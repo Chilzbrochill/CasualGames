@@ -54,7 +54,6 @@ public class tictactoe extends AppCompatActivity {
                 params.columnSpec = GridLayout.spec(j, 1, 1f);
                 button.setLayoutParams(params);
                 button.setTextSize(16);
-                button.setTextColor(Color.BLUE);
                 button.setBackgroundResource(R.drawable.border);
                 button.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -86,8 +85,10 @@ public class tictactoe extends AppCompatActivity {
         if (button.getText().toString().isEmpty()) {
             if (!playAgainstAI) {
                 if (player1Turn) {
+                    button.setTextColor(Color.RED);
                     button.setText("X");
                 } else {
+                    button.setTextColor(Color.BLUE);
                     button.setText("O");
                 }
                 player1Turn = !player1Turn;
@@ -95,17 +96,16 @@ public class tictactoe extends AppCompatActivity {
                 checkWinner();
             } else {
                 if (player1Turn) {
+                    button.setTextColor(Color.RED);
                     button.setText("X");
                     player1Turn = false;
                     checkWinner();
-                    // Ví dụ về thực hiện một tác vụ sau 3 giây
                     handler.postDelayed(new Runnable() {
                         @Override
                         public void run() {
-                            // Thực hiện các tác vụ bạn muốn sau khi thời gian trễ đã qua
                             aiMove();
                         }
-                    }, 2000); // 3000 milliseconds = 3 seconds
+                    }, 1500);
                 }
             }
         }
@@ -117,6 +117,7 @@ public class tictactoe extends AppCompatActivity {
             int row = bestMove[0];
             int col = bestMove[1];
             if (row != -1 && col != -1) {
+                buttons[row][col].setTextColor(Color.BLUE);
                 buttons[row][col].setText("O");
                 player1Turn = true;
                 checkWinner();
@@ -131,10 +132,6 @@ public class tictactoe extends AppCompatActivity {
             if (winner.equals("X")) return new int[]{depth - getTile, 0};
             return new int[]{0, 0};
         }
-
-//        if (depth == 5) { // Giới hạn độ sâu
-//            return new int[]{evaluateBoard()};
-//        }
 
         int bestScore = isMaximizing ? Integer.MIN_VALUE : Integer.MAX_VALUE;
         int[] bestMove = new int[]{-1, -1};
@@ -208,18 +205,6 @@ public class tictactoe extends AppCompatActivity {
     }
 
     private void checkWinner() {
-//        for (int i = 0; i < 10; i++) {
-//            for (int j = 0; j < 10; j++) {
-//                if (checkDirection(i, j, 1, 0) || checkDirection(i, j, 0, 1) || checkDirection(i, j, 1, 1) || checkDirection(i, j, 1, -1)) {
-//                    String winner = buttons[i][j].getText().toString();
-//                    tv.setText(String.format("%s wins!", winner));
-////                    Toast.makeText(this, , Toast.LENGTH_SHORT).show();
-//                    resetBoard();
-//                    return;
-//                }
-//            }
-//        }
-
         String winner = getWinner();
         if (winner != null) {
             if (winner.equals("Hòa")) {
