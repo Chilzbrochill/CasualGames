@@ -259,13 +259,13 @@ public class FlipCard extends AppCompatActivity {
                 Card card = cards[i][j];
 
                 ObjectAnimator animatorControl = ObjectAnimator.ofFloat(card.getImgView(), "rotationY", 0f, -90f);
-                animatorControl.setDuration(1000); // thời gian quay (1000 = 1s)
+                animatorControl.setDuration(250); // thời gian quay (1000 = 1s)
                 animatorControl.addListener(new AnimatorListenerAdapter() {
                     @Override
                     public void onAnimationEnd(Animator animation) {
                         card.getImgView().setImageResource(card.getIdBg());
                         ObjectAnimator animatorControl = ObjectAnimator.ofFloat(card.getImgView(), "rotationY", -90f, 0f);
-                        animatorControl.setDuration(1000);
+                        animatorControl.setDuration(250);
                         animatorControl.addListener(new AnimatorListenerAdapter() {
                             @Override
                             public void onAnimationEnd(Animator animation) {
@@ -356,7 +356,7 @@ public class FlipCard extends AppCompatActivity {
                 // Hàm sẽ được gọi sau 3 giây
                 StartGame();
             }
-        }, 2000);
+        }, 1500);
 
         AddListennerToCard();
     }
