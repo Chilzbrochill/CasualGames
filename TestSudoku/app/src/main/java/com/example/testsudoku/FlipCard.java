@@ -3,11 +3,13 @@ package com.example.testsudoku;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.ObjectAnimator;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -60,6 +62,10 @@ public class FlipCard extends AppCompatActivity {
         }
     }
 
+    // ------- Elements -------
+    public TextView txtScore;
+    public int score = 0;
+
     // ------- Controller -------
     public Card[][] cards;
     public int[][] checkArray;
@@ -70,9 +76,13 @@ public class FlipCard extends AppCompatActivity {
     public int amoutOpen = 0;
 
     // width height table
-    int widthTable = 2;
-    int heightTable = 3;
-    int amountCard = widthTable * heightTable / 2;
+    int widthTable = 4;
+    int heightTable = 5;
+    int widthCard;
+    int heightCard;
+
+
+    int amountCard;
 
     public Card preCard;
     public Card afterCard;
@@ -135,10 +145,21 @@ public class FlipCard extends AppCompatActivity {
 
     public void CreateTable(){
         imageList = new ArrayList<>();
-        imageList.add(R.drawable.friends);
-        imageList.add(R.drawable.num1);
-        imageList.add(R.drawable.num2);
-        imageList.add(R.drawable.num3);
+        imageList.add(R.drawable.vietvg_bgcard);
+        imageList.add(R.drawable.vietvg_grape);
+        imageList.add(R.drawable.vietvg_apple);
+        imageList.add(R.drawable.vietvg_orange);
+        imageList.add(R.drawable.vietvg_pinaapple);
+        imageList.add(R.drawable.vietvg_apricot);
+        imageList.add(R.drawable.vietvg_kiwi);
+        imageList.add(R.drawable.vietvg_avocado);
+        imageList.add(R.drawable.vietvg_mango);
+        imageList.add(R.drawable.vietvg_banana);
+        imageList.add(R.drawable.vietvg_chicken);
+        imageList.add(R.drawable.vietvg_woods);
+        imageList.add(R.drawable.vietvg_hamburger);
+        imageList.add(R.drawable.vietvg_passion);
+        imageList.add(R.drawable.vietvg_pear);
 
         GridLayout gridCard = findViewById(R.id.gridLayoutCard);
 
@@ -148,7 +169,6 @@ public class FlipCard extends AppCompatActivity {
 
         gridCard.setColumnCount(heightTable);
         gridCard.setRowCount(widthTable);
-
         idCheckImg = new int[amountCard][2];
 
         for (int i = 0; i < amountCard; i++){
@@ -175,6 +195,7 @@ public class FlipCard extends AppCompatActivity {
                 boolean checkArr = false;
                 int resultId = 0;
                 do {
+                    //Log.e("dowhile", "");
                     if (amountChoose < amountCard){
                         randomNumber = random.nextInt(max - min) + min;
                         checkArr = true;
@@ -224,26 +245,20 @@ public class FlipCard extends AppCompatActivity {
                 }while (checkArr);
 
                 card.setIDImg(imageList.get(resultId));
-//                card.getImgView().setImageResource(imageList.get(0));
                 card.setIdBg(imageList.get(0));
-                //imgCard.setImageResource(imageList.get(resultId));
 
                 idCheckImg[indexIdCheckImg][0] = resultId;
                 idCheckImg[indexIdCheckImg][1] += 1;
 
                 GridLayout.LayoutParams gridChild = new GridLayout.LayoutParams();
 
-//                gridChild.width = gridCard.getWidth() / widthTable - spacingRowColumn;
-//                gridChild.height = gridCard.getHeight() / widthTable - spacingRowColumn;
-                gridChild.width = 1;
-                gridChild.height = 1;
+                gridChild.width = widthCard;
+                gridChild.height = heightCard;
 
                 int spacingRowColumn = 5;
                 gridChild.setMargins(spacingRowColumn, spacingRowColumn, spacingRowColumn, spacingRowColumn);
                 gridChild.rowSpec = GridLayout.spec(i, 1, 1);
                 gridChild.columnSpec = GridLayout.spec(j, 1, 1);
-
-                //card.getImgView().setBackgroundResource(R.drawable.cardborder);
 
                 card.getImgView().setLayoutParams(gridChild);
                 gridCard.addView(card.getImgView());
@@ -314,6 +329,12 @@ public class FlipCard extends AppCompatActivity {
                                             if (CheckCard()){
                                                 countCorrect += 1;
 
+                                                //preCard.getImgView().setVisibility(View.INVISIBLE);
+                                                //afterCard.getImgView().setVisibility(View.INVISIBLE);
+
+                                                score += 20;
+                                                txtScore.setText(String.valueOf(score));
+
                                                 CheckWin(amountCard);
                                                 amoutOpen = 0;
                                             }
@@ -333,6 +354,59 @@ public class FlipCard extends AppCompatActivity {
         }
     }
 
+    public void SetLevel(){
+        Intent i = getIntent();
+        int levelGame = Integer.parseInt(i.getStringExtra("level"));
+        if (levelGame == 1){
+            widthTable = 2;
+            heightTable = 3;
+            widthCard = 300;
+            heightCard = 300;
+        }
+        else if (levelGame == 2){
+            widthTable = 2;
+            heightTable = 4;
+            widthCard = 225;
+            heightCard = 225;
+        }
+        else if (levelGame == 3){
+            widthTable = 3;
+            heightTable = 4;
+            widthCard = 225;
+            heightCard = 225;
+        }
+        else if (levelGame == 4){
+            widthTable = 4;
+            heightTable = 4;
+            widthCard = 225;
+            heightCard = 225;
+        }
+        else if (levelGame == 5){
+            widthTable = 4;
+            heightTable = 5;
+            widthCard = 180;
+            heightCard = 180;
+        }
+        else if (levelGame == 6){
+            widthTable = 4;
+            heightTable = 6;
+            widthCard = 150;
+            heightCard = 150;
+        }
+
+        amountCard = widthTable * heightTable / 2;
+    }
+
+    public void SetEventButton(){
+        ImageView btnBack = findViewById(R.id.btnBackToLevel);
+        btnBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent(FlipCard.this, menu_level_FlipCard.class);
+                startActivity(i);
+            }
+        });
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -344,6 +418,12 @@ public class FlipCard extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+
+        SetEventButton();
+
+        SetLevel();
+
+        txtScore = findViewById(R.id.txtScore);
 
         CreateTable();
 
