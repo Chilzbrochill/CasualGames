@@ -38,7 +38,7 @@ public class Menu extends AppCompatActivity {
         flipcard.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent i = new Intent(Menu.this, FlipCard.class);
+                Intent i = new Intent(Menu.this, menu_FlipCard.class);
                 startActivity(i);
             }
         });

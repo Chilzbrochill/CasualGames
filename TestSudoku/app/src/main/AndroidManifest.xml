@@ -26,6 +26,16 @@
             android:exported="false" />
         <activity
             android:name=".menu_FlipCard"
+            android:exported="false" />
+        <activity
+            android:name=".menu_tictactoe"
+            android:exported="false" />
+        <activity
+            android:name=".tictactoe"
+            android:exported="false" />
+
+        <activity
+            android:name=".Menu"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
