@@ -1,15 +1,17 @@
 package com.example.testsudoku;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.InputFilter;
 import android.text.InputType;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.Gravity;
+import android.view.View;
 import android.widget.EditText;
 import android.widget.GridLayout;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -20,13 +22,10 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 import java.util.Random;
 
 
-public class MainActivity extends AppCompatActivity {
+public class Sudoku extends AppCompatActivity {
     EditText[][] sudokuCells = new EditText[9][9];
     EditText[][] checkResult = new EditText[9][9];
     Random random = new Random();
@@ -34,29 +33,35 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_sudoku);
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
 
+        ImageView backToSudokuMenu = findViewById(R.id.img_backToSudokuMenu);
+        TextView tv = findViewById(R.id.tv_1);
 
-        int[] nums = {1, 2, 3, 4, 5, 6, 7, 8, 9};
+        backToSudokuMenu.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent(Sudoku.this, SudokuMenu.class);
+                startActivity(i);
+            }
+        });
 
+        // Tạo gridlayout
         GridLayout sudokuGrid = new GridLayout(this);
         sudokuGrid.setLayoutParams(new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT,
                 LinearLayout.LayoutParams.MATCH_PARENT
         ));
 
-        int index, timeX = 1, timeY = 1;
         sudokuGrid.setColumnCount(9); // Số cột là 9 cho ván Sudoku 9x9
         sudokuGrid.setRowCount(9);    // Số hàng là 9 cho ván Sudoku 9x9
         sudokuGrid.setBackgroundColor(Color.parseColor("#FFFFFF")); // Màu nền trắng
-        sudokuGrid.setBackgroundResource(R.drawable.sudoku_grid_border);
-
-        TextView tv = findViewById(R.id.tv_1);
+        sudokuGrid.setBackgroundResource(R.drawable.sudoku_grid_border); // Border cho grid
 
         // Thêm các EditText vào GridLayout
         for (int row = 0; row < 9; row++) {
@@ -67,7 +72,7 @@ public class MainActivity extends AppCompatActivity {
                 params.height = GridLayout.LayoutParams.WRAP_CONTENT;
                 params.columnSpec = GridLayout.spec(col, 1f);
                 params.rowSpec = GridLayout.spec(row, 1f);
-//                params.setMargins(1, 1, 1, 1); // Khoảng cách giữa các ô
+
                 editText.setLayoutParams(params);
                 editText.setGravity(Gravity.CENTER);
                 editText.setPadding(8, 8, 8, 8);
@@ -75,6 +80,8 @@ public class MainActivity extends AppCompatActivity {
                 editText.setBackgroundResource(R.drawable.sudoku_border); // Đặt drawable cho viền
                 editText.setInputType(InputType.TYPE_CLASS_NUMBER); // Chỉ cho phép nhập số
                 editText.setFilters(new InputFilter[]{new InputFilter.LengthFilter(1)}); // Giới hạn 1 ký tự
+                editText.setEnabled(false);
+                editText.setTextColor(Color.BLACK);
 
                 // Lưu EditText vào mảng
                 sudokuCells[row][col] = editText;
@@ -142,7 +149,6 @@ public class MainActivity extends AppCompatActivity {
         return true;
     }
 
-
     public boolean UnusedInCol(int col, int value) {
         for (int x = 0; x < 9; x++) {
             if (!sudokuCells[x][col].getText().toString().isEmpty()) {
@@ -153,7 +159,6 @@ public class MainActivity extends AppCompatActivity {
         }
         return true;
     }
-
 
     public boolean UnusedInBox(int startRow, int startCol, int value) {
         for (int i = 0; i < 3; i++) {
@@ -167,7 +172,6 @@ public class MainActivity extends AppCompatActivity {
         }
         return true;
     }
-
 
     private void fillDiagonal() {
         for (int i = 0; i < 9; i += 3) {
@@ -255,11 +259,9 @@ public class MainActivity extends AppCompatActivity {
             // Kiểm tra nếu ô không trống
             if (!sudokuCells[i][j].getText().toString().isEmpty()) {
                 sudokuCells[i][j].setText(""); // Xóa giá trị của ô, làm trống ô đó
+                sudokuCells[i][j].setEnabled(true);
                 count--; // Giảm số lượng ô cần xóa
             }
         }
     }
-
-
-
 }

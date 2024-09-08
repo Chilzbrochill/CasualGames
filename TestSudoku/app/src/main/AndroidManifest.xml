@@ -13,10 +13,19 @@
         android:theme="@style/Theme.TestSudoku"
         tools:targetApi="31">
         <activity
-            android:name=".MainActivity"
+            android:name=".SudokuMenu"
             android:exported="false" />
         <activity
-            android:name=".Menu"
+            android:name=".Sudoku"
+            android:exported="false" />
+        <activity
+            android:name=".FlipCard"
+            android:exported="false" />
+        <activity
+            android:name=".menu_level_FlipCard"
+            android:exported="false" />
+        <activity
+            android:name=".menu_FlipCard"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
