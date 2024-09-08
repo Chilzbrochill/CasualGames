@@ -8,6 +8,7 @@ import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -59,6 +60,10 @@ public class FlipCard extends AppCompatActivity {
             isRunning = running;
         }
     }
+
+    // ------- Elements -------
+    public TextView txtScore;
+    public int score = 0;
 
     // ------- Controller -------
     public Card[][] cards;
@@ -135,15 +140,15 @@ public class FlipCard extends AppCompatActivity {
 
     public void CreateTable(){
         imageList = new ArrayList<>();
-        imageList.add(R.drawable.friends);
-        imageList.add(R.drawable.num1);
-        imageList.add(R.drawable.num2);
-        imageList.add(R.drawable.num3);
-        imageList.add(R.drawable.num4);
-        imageList.add(R.drawable.num5);
-        imageList.add(R.drawable.num6);
-        imageList.add(R.drawable.num7);
-        imageList.add(R.drawable.num8);
+        imageList.add(R.drawable.vietvg_bgcard);
+        imageList.add(R.drawable.vietvg_grape);
+        imageList.add(R.drawable.vietvg_apple);
+        imageList.add(R.drawable.vietvg_orange);
+        imageList.add(R.drawable.vietvg_pinaapple);
+        imageList.add(R.drawable.vietvg_apricot);
+        imageList.add(R.drawable.vietvg_kiwi);
+        imageList.add(R.drawable.vietvg_avocado);
+        imageList.add(R.drawable.vietvg_mango);
 
         GridLayout gridCard = findViewById(R.id.gridLayoutCard);
 
@@ -229,26 +234,20 @@ public class FlipCard extends AppCompatActivity {
                 }while (checkArr);
 
                 card.setIDImg(imageList.get(resultId));
-//                card.getImgView().setImageResource(imageList.get(0));
                 card.setIdBg(imageList.get(0));
-                //imgCard.setImageResource(imageList.get(resultId));
 
                 idCheckImg[indexIdCheckImg][0] = resultId;
                 idCheckImg[indexIdCheckImg][1] += 1;
 
                 GridLayout.LayoutParams gridChild = new GridLayout.LayoutParams();
 
-//                gridChild.width = gridCard.getWidth() / widthTable - spacingRowColumn;
-//                gridChild.height = gridCard.getHeight() / widthTable - spacingRowColumn;
-                gridChild.width = 1;
-                gridChild.height = 1;
+                gridChild.width = 200;
+                gridChild.height = 200;
 
                 int spacingRowColumn = 5;
                 gridChild.setMargins(spacingRowColumn, spacingRowColumn, spacingRowColumn, spacingRowColumn);
                 gridChild.rowSpec = GridLayout.spec(i, 1, 1);
                 gridChild.columnSpec = GridLayout.spec(j, 1, 1);
-
-                //card.getImgView().setBackgroundResource(R.drawable.cardborder);
 
                 card.getImgView().setLayoutParams(gridChild);
                 gridCard.addView(card.getImgView());
@@ -319,6 +318,9 @@ public class FlipCard extends AppCompatActivity {
                                             if (CheckCard()){
                                                 countCorrect += 1;
 
+                                                score += 20;
+                                                txtScore.setText(String.valueOf(score));
+
                                                 CheckWin(amountCard);
                                                 amoutOpen = 0;
                                             }
@@ -348,6 +350,8 @@ public class FlipCard extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+
+        txtScore = findViewById(R.id.txtScore);
 
         CreateTable();
 
