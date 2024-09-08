@@ -19,13 +19,7 @@
             android:name=".Sudoku"
             android:exported="false" />
         <activity
-            android:name=".FlipCard"
-            android:exported="false" />
-        <activity
-            android:name=".menu_level_FlipCard"
-            android:exported="false" />
-        <activity
-            android:name=".menu_FlipCard"
+            android:name=".Menu"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

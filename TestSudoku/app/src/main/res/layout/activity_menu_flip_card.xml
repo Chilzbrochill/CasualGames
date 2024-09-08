@@ -12,7 +12,7 @@
         android:id="@+id/btnStart"
         android:layout_width="210dp"
         android:layout_height="70dp"
-        android:layout_marginTop="356dp"
+        android:layout_marginTop="230dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
@@ -23,22 +23,20 @@
         android:id="@+id/btnQuit"
         android:layout_width="210dp"
         android:layout_height="70dp"
-        android:layout_marginTop="72dp"
+        android:layout_marginBottom="230dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btnStart"
         app:srcCompat="@drawable/quit" />
 
     <ImageView
-        android:id="@+id/imageView9"
-        android:layout_width="350dp"
-        android:layout_height="250dp"
-        android:layout_marginTop="36dp"
+        android:id="@+id/imageView4"
+        android:layout_width="210dp"
+        android:layout_height="70dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.495"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/vietvg_titlegame" />
+        app:srcCompat="@drawable/settings" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
