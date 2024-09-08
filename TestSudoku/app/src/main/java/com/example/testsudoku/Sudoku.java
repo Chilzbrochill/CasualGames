@@ -39,9 +39,9 @@ public class Sudoku extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
-
         ImageView backToSudokuMenu = findViewById(R.id.img_backToSudokuMenu);
         TextView tv = findViewById(R.id.tv_1);
+        Intent intent = getIntent();
 
         backToSudokuMenu.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -50,7 +50,7 @@ public class Sudoku extends AppCompatActivity {
                 startActivity(i);
             }
         });
-
+        int count = Integer.parseInt(intent.getStringExtra("count"));
         // Tạo gridlayout
         GridLayout sudokuGrid = new GridLayout(this);
         sudokuGrid.setLayoutParams(new LinearLayout.LayoutParams(
@@ -135,7 +135,7 @@ public class Sudoku extends AppCompatActivity {
         mainLayout.addView(sudokuGrid);
         // Tạo và hiển thị bảng Sudoku
         fillBoard();
-        removeNumbers();
+        removeNumbers(count);
     }
 
     public boolean UnusedInRow(int row, int value) {
@@ -249,8 +249,7 @@ public class Sudoku extends AppCompatActivity {
         fillRemaining(0, 3); // Điền các ô còn lại của bảng
     }
 
-    private void removeNumbers() {
-        int count = 30; // Số lượng ô muốn xóa
+    private void removeNumbers(int count) {
         while (count != 0) {
             int cellId = randomGenerator(81) - 1; // Lấy ngẫu nhiên 1 ô
             int i = cellId / 9; // Tính hàng của ô

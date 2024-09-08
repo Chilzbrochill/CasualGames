@@ -41,12 +41,9 @@
         android:layout_height="120dp"
         android:layout_marginStart="48dp"
         android:layout_marginTop="44dp"
-        android:clipToOutline="true"
-        android:scaleType="fitCenter"
-        android:background="@drawable/rounded_corners"
+        android:background="@drawable/sudoku__2_"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView"
-        app:srcCompat="@drawable/sudoku__1_" />
+        app:layout_constraintTop_toBottomOf="@+id/textView" />
 
     <TextView
         android:id="@+id/textView9"
