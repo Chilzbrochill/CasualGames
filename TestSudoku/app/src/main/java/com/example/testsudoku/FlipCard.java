@@ -70,8 +70,8 @@ public class FlipCard extends AppCompatActivity {
     public int amoutOpen = 0;
 
     // width height table
-    int widthTable = 2;
-    int heightTable = 3;
+    int widthTable = 4;
+    int heightTable = 4;
     int amountCard = widthTable * heightTable / 2;
 
     public Card preCard;
@@ -139,6 +139,11 @@ public class FlipCard extends AppCompatActivity {
         imageList.add(R.drawable.num1);
         imageList.add(R.drawable.num2);
         imageList.add(R.drawable.num3);
+        imageList.add(R.drawable.num4);
+        imageList.add(R.drawable.num5);
+        imageList.add(R.drawable.num6);
+        imageList.add(R.drawable.num7);
+        imageList.add(R.drawable.num8);
 
         GridLayout gridCard = findViewById(R.id.gridLayoutCard);
 
@@ -332,7 +337,6 @@ public class FlipCard extends AppCompatActivity {
             }
         }
     }
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
