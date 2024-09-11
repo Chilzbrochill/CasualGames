@@ -3,6 +3,8 @@ package com.example.testsudoku;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.CountDownTimer;
+import android.os.Handler;
 import android.text.Editable;
 import android.text.InputFilter;
 import android.text.InputType;
@@ -26,9 +28,15 @@ import java.util.Random;
 
 
 public class Sudoku extends AppCompatActivity {
+    private TextView timerTextView;
+    private CountDownTimer countDownTimer;
+    private Handler handler;
+    private Runnable runnable;
+    private int secondsElapsed = 0;
     EditText[][] sudokuCells = new EditText[9][9];
     EditText[][] checkResult = new EditText[9][9];
     Random random = new Random();
+    public int point = 0, fails = 0;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -40,9 +48,18 @@ public class Sudoku extends AppCompatActivity {
             return insets;
         });
 
+        //Khai báo các phần tử
         ImageView backToSudokuMenu = findViewById(R.id.img_backToSudokuMenu);
         TextView tv = findViewById(R.id.tv_1);
+        TextView tv_point = findViewById(R.id.tv_point);
+        TextView tv_fail = findViewById(R.id.tv_fail);
 
+        timerTextView = findViewById(R.id.tv_timer);
+
+        //Nhận dữ liệu về độ khó
+        Intent intent = getIntent();
+        int lvl_count = Integer.parseInt(intent.getStringExtra("count"));
+        //Chức năng quay lại trang chủ
         backToSudokuMenu.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -94,16 +111,13 @@ public class Sudoku extends AppCompatActivity {
 
                     @Override
                     public void onTextChanged(CharSequence s, int start, int before, int count) {
-                        // Xử lý khi nội dung đang thay đổi
-                        boolean finished = true;
-
                         // Duyệt qua tất cả các ô trong lưới 9x9
+                        boolean finished = true;
                         for (int i = 0; i < 9; i++) {
                             for (int j = 0; j < 9; j++) {
 
                                 String checkText = checkResult[i][j].getText().toString().trim();
                                 String sudokuText = sudokuCells[i][j].getText().toString().trim();
-
                                 // Kiểm tra nếu ô nào chưa khớp
                                 if (!checkText.equals(sudokuText) || checkText.isEmpty()) {
                                     finished = false;
@@ -117,8 +131,11 @@ public class Sudoku extends AppCompatActivity {
 
                         // Nếu tất cả các ô đều khớp, hiển thị "WIN!"
                         if (finished) {
+                            point = lvl_count * 300 - secondsElapsed;
+                            tv_point.setText("Điểm : " + point);
                             tv.setText("WIN!");
                         } else {
+                            tv_point.setText("");
                             tv.setText("");  // Nếu chưa hoàn thành, có thể xóa thông báo "WIN!"
                         }
                     }
@@ -135,7 +152,49 @@ public class Sudoku extends AppCompatActivity {
         mainLayout.addView(sudokuGrid);
         // Tạo và hiển thị bảng Sudoku
         fillBoard();
-        removeNumbers();
+        removeNumbers(lvl_count);
+        startTimer();
+    }
+
+//    private void startCountDown(long millisInFuture){
+//        countDownTimer = new CountDownTimer(millisInFuture, 1000){
+//            @Override
+//            public void onTick(long millisUntilFinished) {
+//                // Cập nhật TextView với thời gian còn lại theo định dạng mm:ss
+//                int minutes = (int) (millisUntilFinished / 1000) / 60;
+//                int seconds = (int) (millisUntilFinished / 1000) % 60;
+//                String timeFormatted = String.format("%02d:%02d", minutes, seconds);
+//                timerTextView.setText(timeFormatted);
+//            }
+//
+//            @Override
+//            public void onFinish() {
+//                // Hành động khi đếm ngược hoàn tất
+//                timerTextView.setText("00:00");
+//            }
+//        }.start();
+//    }
+    private void startTimer() {
+        handler = new Handler();
+        runnable = new Runnable() {
+            @Override
+            public void run() {
+                // Tính toán phút và giây từ số giây đã trôi qua
+                int minutes = secondsElapsed / 60;
+                int seconds = secondsElapsed % 60;
+                String timeFormatted = String.format("%02d:%02d", minutes, seconds);
+                timerTextView.setText(timeFormatted);
+
+                // Tăng số giây đã trôi qua
+                secondsElapsed++;
+
+                // Lên lịch cho Runnable tiếp theo sau 1 giây
+                handler.postDelayed(this, 1000);
+            }
+        };
+
+        // Bắt đầu bộ đếm thời gian
+        handler.post(runnable);
     }
 
     public boolean UnusedInRow(int row, int value) {
@@ -233,6 +292,8 @@ public class Sudoku extends AppCompatActivity {
         for (int num = 1; num <= 9; num++) {
             if (isSafe(i, j, num)) {
                 sudokuCells[i][j].setText(String.valueOf(num)); // Điền số vào EditText
+                checkResult[i][j].setText(String.valueOf(num)); // Điền số vào EditText
+
                 if (fillRemaining(i, j + 1)) {
                     return true;
                 }
@@ -249,8 +310,7 @@ public class Sudoku extends AppCompatActivity {
         fillRemaining(0, 3); // Điền các ô còn lại của bảng
     }
 
-    private void removeNumbers() {
-        int count = 30; // Số lượng ô muốn xóa
+    private void removeNumbers(int count) {
         while (count != 0) {
             int cellId = randomGenerator(81) - 1; // Lấy ngẫu nhiên 1 ô
             int i = cellId / 9; // Tính hàng của ô
@@ -262,6 +322,15 @@ public class Sudoku extends AppCompatActivity {
                 sudokuCells[i][j].setEnabled(true);
                 count--; // Giảm số lượng ô cần xóa
             }
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        // Dừng bộ đếm thời gian nếu Activity bị huỷ
+        if (countDownTimer != null) {
+            countDownTimer.cancel();
         }
     }
 }

@@ -4,11 +4,14 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.ObjectAnimator;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
 import android.view.View;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
@@ -64,12 +67,21 @@ public class FlipCard extends AppCompatActivity {
 
     // ------- Elements -------
     public TextView txtScore;
+    public TextView txtScorePopup;
     public int score = 0;
 
     // ------- Controller -------
+    boolean isWin = false;
+    FrameLayout winPopup;
+    FrameLayout losePopup;
+    FrameLayout settingPopup;
+    int curLevel;
+    boolean isMusicOn;
+
     public Card[][] cards;
     public int[][] checkArray;
     private ArrayList<Integer> imageList;
+    private ArrayList<Integer> imageTitleLevelList;
     public int[][] idCheckImg;
 
     public int countCorrect;
@@ -137,10 +149,34 @@ public class FlipCard extends AppCompatActivity {
 
     public void CheckWin(int amountCard){
         if (countCorrect == amountCard){
-            Log.e("Win:", "true");
+            isWin = true;
+
+            Handler handler = new Handler();
+            // Thực hiện hàm sau 3 giây
+            handler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    // Hàm sẽ được gọi sau 3 giây
+                    ShowWinPopup();
+                }
+            }, 500);
+
         }else {
             Log.e("Win:", "false");
         }
+    }
+
+    public void ShowWinPopup(){
+        winPopup.setVisibility(View.VISIBLE);
+    }
+    public void ShowLosePopup(){
+        losePopup.setVisibility(View.VISIBLE);
+    }
+    public void ShowSettingPopup(){
+        settingPopup.setVisibility(View.VISIBLE);
+    }
+    public void OffSettingPopup(){
+        settingPopup.setVisibility(View.INVISIBLE);
     }
 
     public void CreateTable(){
@@ -167,8 +203,9 @@ public class FlipCard extends AppCompatActivity {
 
         int amountChoose = 0;
 
-        gridCard.setColumnCount(heightTable);
         gridCard.setRowCount(widthTable);
+        gridCard.setColumnCount(heightTable);
+
         idCheckImg = new int[amountCard][2];
 
         for (int i = 0; i < amountCard; i++){
@@ -334,6 +371,7 @@ public class FlipCard extends AppCompatActivity {
 
                                                 score += 20;
                                                 txtScore.setText(String.valueOf(score));
+                                                txtScorePopup.setText(String.valueOf(score));
 
                                                 CheckWin(amountCard);
                                                 amoutOpen = 0;
@@ -357,23 +395,27 @@ public class FlipCard extends AppCompatActivity {
     public void SetLevel(){
         Intent i = getIntent();
         int levelGame = Integer.parseInt(i.getStringExtra("level"));
+        curLevel = levelGame;
+
+        AddTitleLevel(levelGame - 1);
+
         if (levelGame == 1){
-            widthTable = 2;
-            heightTable = 3;
-            widthCard = 300;
-            heightCard = 300;
+            widthTable = 3;
+            heightTable = 2;
+            widthCard = 325;
+            heightCard = 325;
         }
         else if (levelGame == 2){
-            widthTable = 2;
-            heightTable = 4;
-            widthCard = 225;
-            heightCard = 225;
+            widthTable = 4;
+            heightTable = 2;
+            widthCard = 250;
+            heightCard = 250;
         }
         else if (levelGame == 3){
-            widthTable = 3;
-            heightTable = 4;
-            widthCard = 225;
-            heightCard = 225;
+            widthTable = 4;
+            heightTable = 3;
+            widthCard = 250;
+            heightCard = 250;
         }
         else if (levelGame == 4){
             widthTable = 4;
@@ -382,30 +424,135 @@ public class FlipCard extends AppCompatActivity {
             heightCard = 225;
         }
         else if (levelGame == 5){
-            widthTable = 4;
-            heightTable = 5;
-            widthCard = 180;
-            heightCard = 180;
+            widthTable = 5;
+            heightTable = 4;
+            widthCard = 200;
+            heightCard = 200;
         }
         else if (levelGame == 6){
-            widthTable = 4;
-            heightTable = 6;
-            widthCard = 150;
-            heightCard = 150;
+            widthTable = 6;
+            heightTable = 4;
+            widthCard = 180;
+            heightCard = 180;
         }
 
         amountCard = widthTable * heightTable / 2;
     }
 
     public void SetEventButton(){
-        ImageView btnBack = findViewById(R.id.btnBackToLevel);
-        btnBack.setOnClickListener(new View.OnClickListener() {
+        ImageView btnQuit = findViewById(R.id.btnQuitToLevel);
+        btnQuit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent i = new Intent(FlipCard.this, menu_level_FlipCard.class);
                 startActivity(i);
             }
         });
+
+        ImageView btnSetting = findViewById(R.id.btnSetting);
+        btnSetting.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ShowSettingPopup();
+            }
+        });
+        ImageView btnOffSetting = findViewById(R.id.btnOffSetting);
+        btnOffSetting.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                OffSettingPopup();
+            }
+        });
+
+        ImageView btnCheck = findViewById(R.id.btnNextlevel);
+        btnCheck.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                UnlockNewLevel();
+
+                Intent i = new Intent(FlipCard.this, menu_level_FlipCard.class);
+                startActivity(i);
+            }
+        });
+        ImageView btnRestart = findViewById(R.id.btnRestart);
+        btnRestart.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                recreate();
+            }
+        });
+
+        ImageView btnMusic = findViewById(R.id.btnMusic);
+        btnMusic.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (isMusicOn){
+                    btnMusic.setImageResource(R.drawable.off);
+
+                    isMusicOn = false;
+                }
+                else {
+                    btnMusic.setImageResource(R.drawable.on);
+
+                    isMusicOn = true;
+                }
+            }
+        });
+    }
+
+    public void UnlockNewLevel(){
+        SharedPreferences sharedPreferences = getSharedPreferences("vietvg_Prefs", MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+
+        int nextLv = curLevel + 1;
+        editor.putBoolean(String.format("level%d", nextLv), false);
+        editor.apply();
+    }
+
+    public void SetProgress(float timerSet){
+        ProgressBar determinateProgressBar = findViewById(R.id.progressBar);
+
+
+        // Tăng tiến trình dần dần (ví dụ như tải xuống)
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                for (int i = 100; i >= 0; i--) {
+                    if (i == 0 && !isWin){
+                        ShowLosePopup();
+                        break;
+                    } else if (isWin) {
+                        break;
+                    }
+
+                    final int progress = i;
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            determinateProgressBar.setProgress(progress);
+                        }
+                    });
+                    try {
+                        Thread.sleep((long) timerSet/60); // Chờ 100ms giữa mỗi lần tăng tiến trình
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        }).start();
+    }
+
+    public void AddTitleLevel(int index){
+        imageTitleLevelList = new ArrayList<>();
+        imageTitleLevelList.add(R.drawable.vietvg_titlelv1);
+        imageTitleLevelList.add(R.drawable.vietvg_titlelv2);
+        imageTitleLevelList.add(R.drawable.vietvg_titlelv3);
+        imageTitleLevelList.add(R.drawable.vietvg_titlelv4);
+        imageTitleLevelList.add(R.drawable.vietvg_titlelv5);
+        imageTitleLevelList.add(R.drawable.vietvg_titlelv6);
+
+        ImageView imgTitle = findViewById(R.id.imgTitleLevel);
+        imgTitle.setImageResource(imageTitleLevelList.get(index));
     }
 
     @Override
@@ -419,16 +566,23 @@ public class FlipCard extends AppCompatActivity {
             return insets;
         });
 
-        SetEventButton();
+        isWin = false;
+        isMusicOn = true;
 
+        SetProgress(60000);
+        SetEventButton();
         SetLevel();
 
+        // ---------- GetbyId element ---------
+        winPopup = findViewById(R.id.vietvg_winPopup);
+        losePopup = findViewById(R.id.vietvg_losePopup);
+        settingPopup = findViewById(R.id.vietvg_settingPopup);
         txtScore = findViewById(R.id.txtScore);
+        txtScorePopup = findViewById(R.id.txtWinPopup);
 
         CreateTable();
 
         Handler handler = new Handler();
-
         // Thực hiện hàm sau 3 giây
         handler.postDelayed(new Runnable() {
             @Override

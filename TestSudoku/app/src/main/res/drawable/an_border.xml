@@ -5,4 +5,6 @@
         android:width="1dp"
         android:color="#ffffff"/> <!-- Màu của viền -->
 <!--    <corners android:radius="2dp"/> &lt;!&ndash; Bo tròn góc nếu cần &ndash;&gt;-->
+
+
 </shape>

@@ -80,35 +80,35 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
-        android:id="@+id/imageView5"
+        android:id="@+id/imgBtnDelete"
         android:layout_width="32dp"
         android:layout_height="32dp"
         android:layout_marginStart="60dp"
         android:layout_marginTop="40dp"
         android:tint="#383838"
-        app:layout_constraintStart_toEndOf="@+id/imageView7"
+        app:layout_constraintStart_toEndOf="@+id/imgBtnUndo"
         app:layout_constraintTop_toBottomOf="@+id/main_layout"
         app:srcCompat="@drawable/icons8_eraser_64" />
 
     <ImageView
-        android:id="@+id/imageView6"
+        android:id="@+id/imgBtnPencil"
         android:layout_width="32dp"
         android:layout_height="32dp"
         android:layout_marginStart="60dp"
         android:layout_marginTop="40dp"
         android:tint="#383838"
-        app:layout_constraintStart_toEndOf="@+id/imageView5"
+        app:layout_constraintStart_toEndOf="@+id/imgBtnDelete"
         app:layout_constraintTop_toBottomOf="@+id/main_layout"
         app:srcCompat="@drawable/icons8_pencil_48" />
 
     <ImageView
-        android:id="@+id/imageView2"
+        android:id="@+id/imgBtnHint"
         android:layout_width="32dp"
         android:layout_height="32dp"
         android:layout_marginStart="60dp"
         android:layout_marginTop="40dp"
         android:tint="#383838"
-        app:layout_constraintStart_toEndOf="@+id/imageView6"
+        app:layout_constraintStart_toEndOf="@+id/imgBtnPencil"
         app:layout_constraintTop_toBottomOf="@+id/main_layout"
         app:srcCompat="@drawable/icons8_idea_64" />
 
@@ -119,10 +119,10 @@
         android:layout_marginStart="51dp"
         android:text="Gợi ý"
         app:layout_constraintStart_toEndOf="@+id/textView7"
-        app:layout_constraintTop_toBottomOf="@+id/imageView2" />
+        app:layout_constraintTop_toBottomOf="@+id/imgBtnHint" />
 
     <ImageView
-        android:id="@+id/imageView7"
+        android:id="@+id/imgBtnUndo"
         android:layout_width="32dp"
         android:layout_height="32dp"
         android:layout_marginStart="70dp"
@@ -139,7 +139,7 @@
         android:layout_marginStart="67dp"
         android:text="Bút chì"
         app:layout_constraintStart_toEndOf="@+id/textView8"
-        app:layout_constraintTop_toBottomOf="@+id/imageView6" />
+        app:layout_constraintTop_toBottomOf="@+id/imgBtnPencil" />
 
     <TextView
         android:id="@+id/textView8"
@@ -148,7 +148,7 @@
         android:layout_marginStart="47dp"
         android:text="Xóa"
         app:layout_constraintStart_toEndOf="@+id/textView11"
-        app:layout_constraintTop_toBottomOf="@+id/imageView5" />
+        app:layout_constraintTop_toBottomOf="@+id/imgBtnDelete" />
 
     <TextView
         android:id="@+id/textView11"
@@ -157,7 +157,7 @@
         android:layout_marginStart="60dp"
         android:text="Hoàn tác"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView7" />
+        app:layout_constraintTop_toBottomOf="@+id/imgBtnUndo" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
