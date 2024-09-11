@@ -68,7 +68,7 @@ public class menu_tictactoe extends AppCompatActivity {
                     hiddenLayout.setVisibility(View.VISIBLE);
                     overlay.setVisibility(View.VISIBLE);
 
-                    Animation slideUp = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.slide_up);
+                    Animation slideUp = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.an_slide_up);
                     hiddenLayout.startAnimation(slideUp);
                 } else {
                     hiddenLayout.setVisibility(View.GONE);
