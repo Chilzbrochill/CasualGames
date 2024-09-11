@@ -317,6 +317,7 @@ public class tictactoe extends AppCompatActivity {
             public void onFinish() {
                 progressBar.setProgress(0);
                 player1Turn = !player1Turn;
+                countDownTimer.start();
             }
         };
 

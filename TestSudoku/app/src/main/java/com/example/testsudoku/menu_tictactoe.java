@@ -82,6 +82,9 @@ public class menu_tictactoe extends AppCompatActivity {
             public void onClick(View view) {
                 hiddenLayout.setVisibility(View.GONE);
                 overlay.setVisibility(View.GONE);
+
+                Animation slideDown = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.slide_down);
+                hiddenLayout.startAnimation(slideDown);
             }
         });
 
