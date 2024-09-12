@@ -219,9 +219,9 @@ public class menu_tictactoe extends AppCompatActivity {
         overlay.setVisibility(val2);
     }
 
-    private MediaPlayer music(int musicFile, boolean sate) {
+    private MediaPlayer music(int musicFile, boolean state) {
         MediaPlayer mediaPlayer = MediaPlayer.create(this, musicFile);
-        mediaPlayer.setLooping(sate);
+        mediaPlayer.setLooping(state);
         return mediaPlayer;
     }
 
