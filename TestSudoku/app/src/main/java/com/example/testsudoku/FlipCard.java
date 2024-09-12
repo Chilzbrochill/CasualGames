@@ -167,7 +167,7 @@ public class FlipCard extends AppCompatActivity {
                     // Hàm sẽ được gọi sau 3 giây
                     ShowWinPopup();
                 }
-            }, 500);
+            }, 1500);
 
         }else {
             Log.e("Win:", "false");
@@ -429,24 +429,28 @@ public class FlipCard extends AppCompatActivity {
             heightTable = 3;
             widthCard = 250;
             heightCard = 250;
+            SetProgress(45000);
         }
         else if (levelGame == 4){
             widthTable = 4;
             heightTable = 4;
             widthCard = 225;
             heightCard = 225;
+            SetProgress(50000);
         }
         else if (levelGame == 5){
             widthTable = 5;
             heightTable = 4;
             widthCard = 200;
             heightCard = 200;
+            SetProgress(55000);
         }
         else if (levelGame == 6){
             widthTable = 6;
             heightTable = 4;
             widthCard = 180;
             heightCard = 180;
+            SetProgress(60000);
         }
 
         amountCard = widthTable * heightTable / 2;
