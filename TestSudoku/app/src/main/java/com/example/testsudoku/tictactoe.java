@@ -32,6 +32,7 @@ public class tictactoe extends AppCompatActivity {
     boolean playAgainstAI;
     int getTile;
     MediaPlayer mediaPlayer;
+    MediaPlayer winSound;
     boolean speaker = false;
     CountDownTimer countDownTimer;
 
@@ -50,7 +51,7 @@ public class tictactoe extends AppCompatActivity {
         gridLayout.setBackgroundResource(R.drawable.an_border);
         btnBack = findViewById(R.id.img_icon_back);
         btnMusic = findViewById(R.id.img_music);
-        mediaPlayer = music(R.raw.curious);
+        mediaPlayer = music(R.raw.curious, true);
 
         progressBar = findViewById(R.id.progressBar);
         progressBar.setMax(100);
@@ -287,6 +288,8 @@ public class tictactoe extends AppCompatActivity {
                 buttons[i][j].setEnabled(false);
             }
         }
+        winSound = music(R.raw.vietvg_finish, false);
+        winSound.start();
         if (countDownTimer != null) {
             countDownTimer.cancel();
         }
@@ -301,6 +304,7 @@ public class tictactoe extends AppCompatActivity {
             }
         }
         tv.setText("");
+        winSound.pause();
     }
 
     private void startCountDownTimer() {
@@ -325,9 +329,9 @@ public class tictactoe extends AppCompatActivity {
         countDownTimer.start();
     }
 
-    private MediaPlayer music(int musicFile) {
+    private MediaPlayer music(int musicFile, boolean state) {
         MediaPlayer mediaPlayer = MediaPlayer.create(this, musicFile);
-        mediaPlayer.setLooping(true);
+        mediaPlayer.setLooping(state);
         return mediaPlayer;
     }
 
@@ -337,6 +341,10 @@ public class tictactoe extends AppCompatActivity {
         if (mediaPlayer != null) {
             mediaPlayer.release();
             mediaPlayer = null;
+        }
+        if (winSound != null) {
+            winSound.release();
+            winSound = null;
         }
     }
 }
