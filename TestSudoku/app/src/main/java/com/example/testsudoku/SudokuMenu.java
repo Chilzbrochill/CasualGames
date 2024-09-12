@@ -1,6 +1,7 @@
 package com.example.testsudoku;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.MotionEvent;
 import android.view.View;
@@ -8,6 +9,7 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -19,6 +21,8 @@ import androidx.core.view.WindowInsetsCompat;
 public class SudokuMenu extends AppCompatActivity {
     private LinearLayout layoutDifficulty;
     private View opacityView;
+    int highest_point = 0;
+    int getPoint = 0;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -29,10 +33,47 @@ public class SudokuMenu extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
-        Button newGame = findViewById(R.id.button_newgameSudoku);
 
         // Tham chiếu đến layout chọn độ khó
         layoutDifficulty = findViewById(R.id.layoutDifficulty);
+        Button quitSudoku = findViewById(R.id.button_QuitSudoku);
+        Button continueSudoku = findViewById(R.id.button_continueSudoku);
+        TextView highest_point_tv = findViewById(R.id.tv_highestPoint);
+        Intent iGet = getIntent();
+        SharedPreferences sharedPreferences = getSharedPreferences("MyPrefs", MODE_PRIVATE);
+
+        if (iGet.hasExtra("point_win")){
+            if(!iGet.getStringExtra("point_win").isEmpty()) {
+                getPoint = Integer.parseInt(iGet.getStringExtra("point_win"));
+            }
+            if(getPoint>=highest_point){
+                highest_point = getPoint;
+                highest_point_tv.setText("Điểm cao nhất : " + highest_point);
+
+                //Ghi dữ liệu vào cục bộ
+                SharedPreferences.Editor editor = sharedPreferences.edit();
+                editor.putInt("highest_point", highest_point);
+                editor.apply();  // Sử dụng apply() hoặc commit()
+            }
+        }
+
+        //Đọc dữ liệu
+        highest_point = sharedPreferences.getInt("highest_point", 0);
+
+        Button newGame = findViewById(R.id.button_newgameSudoku);
+
+        Intent i = new Intent(SudokuMenu.this, Sudoku.class);
+
+        highest_point_tv.setText("Điểm cao nhất : " + highest_point);
+
+        continueSudoku.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                i.putExtra("play", "continue");
+                i.putExtra("count", "30");
+                startActivity(i);
+            }
+        });
 
         newGame.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -44,7 +85,7 @@ public class SudokuMenu extends AppCompatActivity {
                 easy.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        Intent i = new Intent(SudokuMenu.this, Sudoku.class);
+                        i.putExtra("play", "new");
                         i.putExtra("count", "30");
                         startActivity(i);
                     }
@@ -52,7 +93,7 @@ public class SudokuMenu extends AppCompatActivity {
                 medium.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        Intent i = new Intent(SudokuMenu.this, Sudoku.class);
+                        i.putExtra("play", "new");
                         i.putExtra("count", "40");
                         startActivity(i);
                     }
@@ -60,14 +101,13 @@ public class SudokuMenu extends AppCompatActivity {
                 hard.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        Intent i = new Intent(SudokuMenu.this, Sudoku.class);
+                        i.putExtra("play", "new");
                         i.putExtra("count", "50");
                         startActivity(i);
                     }
                 });
             }
         });
-        ConstraintLayout constraintLayout = findViewById(R.id.main);
         Animation slideDown = AnimationUtils.loadAnimation(this, R.anim.slide_down);
         opacityView = findViewById(R.id.backgroundOverlay);
         opacityView.setOnClickListener(new View.OnClickListener() {
@@ -78,6 +118,13 @@ public class SudokuMenu extends AppCompatActivity {
                 opacityView.setVisibility(View.INVISIBLE);
             }
         });
+        quitSudoku.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent(SudokuMenu.this, Menu.class);
+                startActivity(i);
+            }
+        });
     }
     private void showDifficultyLayout() {
         Animation slideUp = AnimationUtils.loadAnimation(this, R.anim.slide_up);
@@ -86,5 +133,6 @@ public class SudokuMenu extends AppCompatActivity {
         layoutDifficulty.startAnimation(slideUp);
         opacityView.setVisibility(View.VISIBLE);// Áp dụng animation
     }
+
 
 }
