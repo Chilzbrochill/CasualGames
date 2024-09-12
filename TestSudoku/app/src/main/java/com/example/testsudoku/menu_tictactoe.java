@@ -6,7 +6,10 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -18,6 +21,8 @@ import androidx.core.view.WindowInsetsCompat;
 public class menu_tictactoe extends AppCompatActivity {
 
     ImageView btnNewgame, btn2players, btnExit, btn3, btn5, btn8, btn10, btnCustom, btnHome, btnMusic;
+    EditText edtCustomSize;
+    Button btnPlay;
     View overlay;
     ConstraintLayout hiddenLayout;
     MediaPlayer mediaPlayer;
@@ -41,6 +46,9 @@ public class menu_tictactoe extends AppCompatActivity {
         btnMusic = findViewById(R.id.img_icon_music);
         overlay = findViewById(R.id.overlay_bg);
         hiddenLayout = findViewById(R.id.hidden_layout);
+        edtCustomSize = findViewById(R.id.edtCustomSize);
+        btnPlay = findViewById(R.id.btnPlay);
+
         mediaPlayer = MediaPlayer.create(this, R.raw.music_bg_tictactoe);
         mediaPlayer.setLooping(true);
 
@@ -65,14 +73,12 @@ public class menu_tictactoe extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 if (hiddenLayout.getVisibility() == View.GONE) {
-                    hiddenLayout.setVisibility(View.VISIBLE);
-                    overlay.setVisibility(View.VISIBLE);
+                    hideAndShow(View.VISIBLE, View.VISIBLE);
 
                     Animation slideUp = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.an_slide_up);
                     hiddenLayout.startAnimation(slideUp);
                 } else {
-                    hiddenLayout.setVisibility(View.GONE);
-                    overlay.setVisibility(View.GONE);
+                    hideAndShow(View.GONE, View.GONE);
                 }
             }
         });
@@ -80,9 +86,9 @@ public class menu_tictactoe extends AppCompatActivity {
         overlay.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                hiddenLayout.setVisibility(View.GONE);
-                overlay.setVisibility(View.GONE);
-
+                hideAndShow(View.GONE, View.GONE);
+                edtCustomSize.setVisibility(View.GONE);
+                btnPlay.setVisibility(View.GONE);
                 Animation slideDown = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.slide_down);
                 hiddenLayout.startAnimation(slideDown);
             }
@@ -91,56 +97,78 @@ public class menu_tictactoe extends AppCompatActivity {
         hiddenLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                if (edtCustomSize.getVisibility() == View.VISIBLE & btnPlay.getVisibility() == View.VISIBLE) {
+                    edtCustomSize.setVisibility(View.GONE);
+                    btnPlay.setVisibility(View.GONE);
+                }
             }
         });
 
         btn3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                hiddenLayout.setVisibility(View.GONE);
-                overlay.setVisibility(View.GONE);
+                hideAndShow(View.GONE, View.GONE);
                 mediaPlayer.pause();
-                Intent intent = new Intent(menu_tictactoe.this, tictactoe.class);
-                intent.putExtra("tile", 3);
-                startActivity(intent);
-
+                switchActivity(3);
             }
         });
 
         btn5.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                hiddenLayout.setVisibility(View.GONE);
-                overlay.setVisibility(View.GONE);
+                hideAndShow(View.GONE, View.GONE);
                 mediaPlayer.pause();
-                Intent intent = new Intent(menu_tictactoe.this, tictactoe.class);
-                intent.putExtra("tile", 5);
-                startActivity(intent);
+                switchActivity(5);
             }
         });
 
         btn8.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                hiddenLayout.setVisibility(View.GONE);
-                overlay.setVisibility(View.GONE);
+                hideAndShow(View.GONE, View.GONE);
                 mediaPlayer.pause();
-                Intent intent = new Intent(menu_tictactoe.this, tictactoe.class);
-                intent.putExtra("tile", 8);
-                startActivity(intent);
+                switchActivity(8);
             }
         });
 
         btn10.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                hiddenLayout.setVisibility(View.GONE);
-                overlay.setVisibility(View.GONE);
+                hideAndShow(View.GONE, View.GONE);
                 mediaPlayer.pause();
-                Intent intent = new Intent(menu_tictactoe.this, tictactoe.class);
-                intent.putExtra("tile", 10);
-                startActivity(intent);
+                switchActivity(10);
+            }
+        });
+
+        btnCustom.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (edtCustomSize.getVisibility() == View.GONE & btnPlay.getVisibility() == View.GONE) {
+                    edtCustomSize.setVisibility(View.VISIBLE);
+                    btnPlay.setVisibility(View.VISIBLE);
+                } else {
+                    edtCustomSize.setVisibility(View.GONE);
+                    btnPlay.setVisibility(View.GONE);
+                }
+            }
+        });
+
+        btnPlay.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String getZize = edtCustomSize.getText().toString();
+                if (!getZize.isEmpty()) {
+                    int size = Integer.parseInt(getZize);
+                    if (size < 3 || size > 10) {
+                        Toast.makeText(menu_tictactoe.this, "Sizes range from 3 to 10!", Toast.LENGTH_SHORT).show();
+                    }
+                    else {
+                        switchActivity(size);
+                        hideAndShow(View.GONE, View.GONE);
+                        edtCustomSize.setVisibility(View.GONE);
+                        btnPlay.setVisibility(View.GONE);
+                    }
+                }
             }
         });
 
@@ -164,7 +192,9 @@ public class menu_tictactoe extends AppCompatActivity {
             public void onClick(View view) {
                 mediaPlayer.pause();
                 Intent intent = new Intent(menu_tictactoe.this, Menu.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
                 startActivity(intent);
+                finish();
             }
         });
 
@@ -173,8 +203,21 @@ public class menu_tictactoe extends AppCompatActivity {
             public void onClick(View view) {
                 mediaPlayer.pause();
                 Intent intent = new Intent(menu_tictactoe.this, Menu.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
                 startActivity(intent);
+                finish();
             }
         });
+    }
+
+    private void switchActivity(int value) {
+        Intent intent = new Intent(menu_tictactoe.this, tictactoe.class);
+        intent.putExtra("tile", value);
+        startActivity(intent);
+    }
+
+    private void hideAndShow(int val1, int val2) {
+        hiddenLayout.setVisibility(val1);
+        overlay.setVisibility(val2);
     }
 }

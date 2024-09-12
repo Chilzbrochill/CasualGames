@@ -55,16 +55,14 @@ public class tictactoe extends AppCompatActivity {
         mediaPlayer.setLooping(true);
 
         progressBar = findViewById(R.id.progressBar);
-
         progressBar.setMax(100);
 
+        playAgainstAI = getIntent().getBooleanExtra("playAI", false);
         getTile = getIntent().getIntExtra("tile", 3);
         if (getTile <= 0) {
             getTile = 3;
         }
-
         buttons = new Button[getTile][getTile];
-        playAgainstAI = getIntent().getBooleanExtra("playAI", false);
 
         for (int i = 0; i < getTile; i++) {
             for (int j = 0; j < getTile; j++) {
@@ -107,7 +105,9 @@ public class tictactoe extends AppCompatActivity {
             public void onClick(View view) {
                 mediaPlayer.pause();
                 Intent intent = new Intent(tictactoe.this, menu_tictactoe.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
                 startActivity(intent);
+                finish();
             }
         });
 
