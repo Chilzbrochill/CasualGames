@@ -18,6 +18,7 @@ import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
@@ -70,21 +71,26 @@ public class FlipCard extends AppCompatActivity {
     // ------- Elements -------
     public TextView txtScore;
     public TextView txtScorePopup;
+    ProgressBar determinateProgressBar;
     public int score = 0;
 
     // ------ Media ------
+    private ArrayList<Integer> bgMusics;
     MediaPlayer bgMusic;
     MediaPlayer soundCorrect;
     MediaPlayer soundIncorrect;
     MediaPlayer soundFinish;
 
     // ------- Controller -------
+    int timeSetProgress = 0;
+    int lastProgress = -1;
     boolean isWin = false;
-    FrameLayout winPopup;
-    FrameLayout losePopup;
-    FrameLayout settingPopup;
+    ConstraintLayout winPopup;
+    ConstraintLayout losePopup;
+    ConstraintLayout settingPopup;
     int curLevel;
     boolean isMusicOn;
+    boolean isSettingOn;
 
     public Card[][] cards;
     private ArrayList<Integer> imageList;
@@ -156,8 +162,6 @@ public class FlipCard extends AppCompatActivity {
 
     public void CheckWin(int amountCard){
         if (countCorrect == amountCard){
-            soundFinish.start();
-
             isWin = true;
             Handler handler = new Handler();
             // Thực hiện hàm sau 3 giây
@@ -165,9 +169,10 @@ public class FlipCard extends AppCompatActivity {
                 @Override
                 public void run() {
                     // Hàm sẽ được gọi sau 3 giây
+                    soundFinish.start();
                     ShowWinPopup();
                 }
-            }, 1500);
+            }, 1000);
 
         }else {
             Log.e("Win:", "false");
@@ -181,10 +186,13 @@ public class FlipCard extends AppCompatActivity {
         losePopup.setVisibility(View.VISIBLE);
     }
     public void ShowSettingPopup(){
+        isSettingOn = true;
         settingPopup.setVisibility(View.VISIBLE);
     }
-    public void OffSettingPopup(){
+    public void HideSettingPopup(){
+        isSettingOn = false;
         settingPopup.setVisibility(View.INVISIBLE);
+        SetProgress(timeSetProgress);
     }
 
     public void CreateTable(){
@@ -407,6 +415,8 @@ public class FlipCard extends AppCompatActivity {
         int levelGame = Integer.parseInt(i.getStringExtra("level"));
         curLevel = levelGame;
 
+        determinateProgressBar = findViewById(R.id.progressBar);
+
         AddTitleLevel(levelGame - 1);
 
         if (levelGame == 1){
@@ -414,45 +424,45 @@ public class FlipCard extends AppCompatActivity {
             heightTable = 2;
             widthCard = 325;
             heightCard = 325;
-
-            SetProgress(30000);
+            timeSetProgress = 20000;
         }
         else if (levelGame == 2){
             widthTable = 4;
             heightTable = 2;
             widthCard = 250;
             heightCard = 250;
-            SetProgress(40000);
+            timeSetProgress = 25000;
         }
         else if (levelGame == 3){
             widthTable = 4;
             heightTable = 3;
             widthCard = 250;
             heightCard = 250;
-            SetProgress(45000);
+            timeSetProgress = 30000;
         }
         else if (levelGame == 4){
             widthTable = 4;
             heightTable = 4;
             widthCard = 225;
             heightCard = 225;
-            SetProgress(50000);
+            timeSetProgress = 35000;
         }
         else if (levelGame == 5){
             widthTable = 5;
             heightTable = 4;
             widthCard = 200;
             heightCard = 200;
-            SetProgress(55000);
+            timeSetProgress = 40000;
         }
         else if (levelGame == 6){
             widthTable = 6;
             heightTable = 4;
             widthCard = 180;
             heightCard = 180;
-            SetProgress(60000);
+            timeSetProgress = 45000;
         }
 
+        SetProgress(timeSetProgress);
         amountCard = widthTable * heightTable / 2;
     }
 
@@ -463,6 +473,7 @@ public class FlipCard extends AppCompatActivity {
             public void onClick(View view) {
                 Intent i = new Intent(FlipCard.this, menu_level_FlipCard.class);
                 startActivity(i);
+                finish();
             }
         });
 
@@ -477,7 +488,7 @@ public class FlipCard extends AppCompatActivity {
         btnOffSetting.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                OffSettingPopup();
+                HideSettingPopup();
             }
         });
 
@@ -489,6 +500,7 @@ public class FlipCard extends AppCompatActivity {
 
                 Intent i = new Intent(FlipCard.this, menu_level_FlipCard.class);
                 startActivity(i);
+                finish();
             }
         });
         ImageView btnRestart = findViewById(R.id.btnRestart);
@@ -506,10 +518,14 @@ public class FlipCard extends AppCompatActivity {
                 if (isMusicOn){
                     btnMusic.setImageResource(R.drawable.off);
 
+                    bgMusic.pause();
+
                     isMusicOn = false;
                 }
                 else {
                     btnMusic.setImageResource(R.drawable.on);
+
+                    bgMusic.start();
 
                     isMusicOn = true;
                 }
@@ -527,22 +543,34 @@ public class FlipCard extends AppCompatActivity {
     }
 
     public void SetProgress(float timerSet){
-        ProgressBar determinateProgressBar = findViewById(R.id.progressBar);
-
-
         // Tăng tiến trình dần dần (ví dụ như tải xuống)
         new Thread(new Runnable() {
             @Override
             public void run() {
-                for (int i = 100; i >= 0; i--) {
+                int setPr;
+                if (lastProgress == -1){
+                    setPr = 100;
+                }
+                else {
+                    setPr = lastProgress;
+                }
+
+                for (int i = setPr; i >= 0; i--) {
                     if (i == 0 && !isWin){
-                        ShowLosePopup();
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                ShowLosePopup();
+                            }
+                        });
+
                         break;
-                    } else if (isWin) {
+                    } else if (isWin || isSettingOn) {
                         break;
                     }
 
                     final int progress = i;
+                    lastProgress = i;
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
@@ -573,12 +601,20 @@ public class FlipCard extends AppCompatActivity {
     }
 
     public void CreateSound(){
-        bgMusic = MediaPlayer.create(this, R.raw.vietvg_bgmusic);
+        bgMusics = new ArrayList<>();
+        bgMusics.add(R.raw.vietvg_bgmusic);
+        bgMusics.add(R.raw.vietvg_bgmusic2);
+        bgMusics.add(R.raw.vietvg_bgmusic3);
+
+        Random random = new Random();
+        int rdBgMusicIndex = random.nextInt(3);
+        bgMusic = MediaPlayer.create(this, bgMusics.get(rdBgMusicIndex));
+
         soundCorrect = MediaPlayer.create(this, R.raw.vietvg_correct);
         soundIncorrect = MediaPlayer.create(this, R.raw.vietvg_wrong);
         soundFinish = MediaPlayer.create(this, R.raw.vietvg_finish);
 
-        bgMusic.setVolume(0.7f,0.7f);
+        bgMusic.setVolume(0.8f,0.8f);
         bgMusic.setLooping(true);
         bgMusic.start();
     }
@@ -596,20 +632,20 @@ public class FlipCard extends AppCompatActivity {
 
         isWin = false;
         isMusicOn = true;
+        isSettingOn = false;
 
         SetEventButton();
         SetLevel();
 
         // ---------- GetbyId element ---------
-        winPopup = findViewById(R.id.vietvg_winPopup);
-        losePopup = findViewById(R.id.vietvg_losePopup);
-        settingPopup = findViewById(R.id.vietvg_settingPopup);
+        winPopup = findViewById(R.id.vietvg_winPanel);
+        losePopup = findViewById(R.id.vietvg_losePanel);
+        settingPopup = findViewById(R.id.vietvg_settingPanel);
         txtScore = findViewById(R.id.txtScore);
         txtScorePopup = findViewById(R.id.txtWinPopup);
 
         CreateSound();
         CreateTable();
-
         Handler handler = new Handler();
         // Thực hiện hàm sau 3 giây
         handler.postDelayed(new Runnable() {
