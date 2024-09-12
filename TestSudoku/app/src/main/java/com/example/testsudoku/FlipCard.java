@@ -5,6 +5,8 @@ import android.animation.AnimatorListenerAdapter;
 import android.animation.ObjectAnimator;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.media.MediaPlayer;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
@@ -70,6 +72,12 @@ public class FlipCard extends AppCompatActivity {
     public TextView txtScorePopup;
     public int score = 0;
 
+    // ------ Media ------
+    MediaPlayer bgMusic;
+    MediaPlayer soundCorrect;
+    MediaPlayer soundIncorrect;
+    MediaPlayer soundFinish;
+
     // ------- Controller -------
     boolean isWin = false;
     FrameLayout winPopup;
@@ -79,7 +87,6 @@ public class FlipCard extends AppCompatActivity {
     boolean isMusicOn;
 
     public Card[][] cards;
-    public int[][] checkArray;
     private ArrayList<Integer> imageList;
     private ArrayList<Integer> imageTitleLevelList;
     public int[][] idCheckImg;
@@ -149,8 +156,9 @@ public class FlipCard extends AppCompatActivity {
 
     public void CheckWin(int amountCard){
         if (countCorrect == amountCard){
-            isWin = true;
+            soundFinish.start();
 
+            isWin = true;
             Handler handler = new Handler();
             // Thực hiện hàm sau 3 giây
             handler.postDelayed(new Runnable() {
@@ -159,7 +167,7 @@ public class FlipCard extends AppCompatActivity {
                     // Hàm sẽ được gọi sau 3 giây
                     ShowWinPopup();
                 }
-            }, 500);
+            }, 1500);
 
         }else {
             Log.e("Win:", "false");
@@ -366,6 +374,7 @@ public class FlipCard extends AppCompatActivity {
                                             if (CheckCard()){
                                                 countCorrect += 1;
 
+                                                soundCorrect.start();
                                                 //preCard.getImgView().setVisibility(View.INVISIBLE);
                                                 //afterCard.getImgView().setVisibility(View.INVISIBLE);
 
@@ -377,6 +386,7 @@ public class FlipCard extends AppCompatActivity {
                                                 amoutOpen = 0;
                                             }
                                             else {
+                                                soundIncorrect.start();
                                                 ResetCard();
                                             }
                                         }
@@ -404,36 +414,43 @@ public class FlipCard extends AppCompatActivity {
             heightTable = 2;
             widthCard = 325;
             heightCard = 325;
+
+            SetProgress(30000);
         }
         else if (levelGame == 2){
             widthTable = 4;
             heightTable = 2;
             widthCard = 250;
             heightCard = 250;
+            SetProgress(40000);
         }
         else if (levelGame == 3){
             widthTable = 4;
             heightTable = 3;
             widthCard = 250;
             heightCard = 250;
+            SetProgress(45000);
         }
         else if (levelGame == 4){
             widthTable = 4;
             heightTable = 4;
             widthCard = 225;
             heightCard = 225;
+            SetProgress(50000);
         }
         else if (levelGame == 5){
             widthTable = 5;
             heightTable = 4;
             widthCard = 200;
             heightCard = 200;
+            SetProgress(55000);
         }
         else if (levelGame == 6){
             widthTable = 6;
             heightTable = 4;
             widthCard = 180;
             heightCard = 180;
+            SetProgress(60000);
         }
 
         amountCard = widthTable * heightTable / 2;
@@ -555,6 +572,17 @@ public class FlipCard extends AppCompatActivity {
         imgTitle.setImageResource(imageTitleLevelList.get(index));
     }
 
+    public void CreateSound(){
+        bgMusic = MediaPlayer.create(this, R.raw.vietvg_bgmusic);
+        soundCorrect = MediaPlayer.create(this, R.raw.vietvg_correct);
+        soundIncorrect = MediaPlayer.create(this, R.raw.vietvg_wrong);
+        soundFinish = MediaPlayer.create(this, R.raw.vietvg_finish);
+
+        bgMusic.setVolume(0.7f,0.7f);
+        bgMusic.setLooping(true);
+        bgMusic.start();
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -569,7 +597,6 @@ public class FlipCard extends AppCompatActivity {
         isWin = false;
         isMusicOn = true;
 
-        SetProgress(60000);
         SetEventButton();
         SetLevel();
 
@@ -580,6 +607,7 @@ public class FlipCard extends AppCompatActivity {
         txtScore = findViewById(R.id.txtScore);
         txtScorePopup = findViewById(R.id.txtWinPopup);
 
+        CreateSound();
         CreateTable();
 
         Handler handler = new Handler();
@@ -593,5 +621,28 @@ public class FlipCard extends AppCompatActivity {
         }, 1500);
 
         AddListennerToCard();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+
+        imageList.clear();
+        imageList = null;
+
+        imageTitleLevelList.clear();
+        imageTitleLevelList = null;
+
+        soundCorrect.release();
+        soundCorrect = null;
+        soundIncorrect.release();
+        soundIncorrect = null;
+        soundFinish.release();
+        soundFinish = null;
+
+        if (bgMusic != null) {
+            bgMusic.release();
+            bgMusic = null;
+        }
     }
 }
