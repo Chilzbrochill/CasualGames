@@ -48,9 +48,7 @@ public class menu_tictactoe extends AppCompatActivity {
         hiddenLayout = findViewById(R.id.hidden_layout);
         edtCustomSize = findViewById(R.id.edtCustomSize);
         btnPlay = findViewById(R.id.btnPlay);
-
-        mediaPlayer = MediaPlayer.create(this, R.raw.music_bg_tictactoe);
-        mediaPlayer.setLooping(true);
+        mediaPlayer = music(R.raw.music_bg_tictactoe);
 
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
@@ -219,5 +217,20 @@ public class menu_tictactoe extends AppCompatActivity {
     private void hideAndShow(int val1, int val2) {
         hiddenLayout.setVisibility(val1);
         overlay.setVisibility(val2);
+    }
+
+    private MediaPlayer music(int musicFile) {
+        MediaPlayer mediaPlayer = MediaPlayer.create(this, musicFile);
+        mediaPlayer.setLooping(true);
+        return mediaPlayer;
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (mediaPlayer != null) {
+            mediaPlayer.release();
+            mediaPlayer = null;
+        }
     }
 }

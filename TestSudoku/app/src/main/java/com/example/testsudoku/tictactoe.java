@@ -31,7 +31,6 @@ public class tictactoe extends AppCompatActivity {
     boolean player1Turn = true;
     boolean playAgainstAI;
     int getTile;
-    Handler handler = new Handler();
     MediaPlayer mediaPlayer;
     boolean speaker = false;
     CountDownTimer countDownTimer;
@@ -51,8 +50,7 @@ public class tictactoe extends AppCompatActivity {
         gridLayout.setBackgroundResource(R.drawable.an_border);
         btnBack = findViewById(R.id.img_icon_back);
         btnMusic = findViewById(R.id.img_music);
-        mediaPlayer = MediaPlayer.create(this, R.raw.curious);
-        mediaPlayer.setLooping(true);
+        mediaPlayer = music(R.raw.curious);
 
         progressBar = findViewById(R.id.progressBar);
         progressBar.setMax(100);
@@ -64,27 +62,7 @@ public class tictactoe extends AppCompatActivity {
         }
         buttons = new Button[getTile][getTile];
 
-        for (int i = 0; i < getTile; i++) {
-            for (int j = 0; j < getTile; j++) {
-                Button button = new Button(this);
-                GridLayout.LayoutParams params = new GridLayout.LayoutParams();
-                params.width = 80;
-                params.height = 80;
-                params.rowSpec = GridLayout.spec(i, 1, 1f);
-                params.columnSpec = GridLayout.spec(j, 1, 1f);
-                button.setLayoutParams(params);
-                button.setTextSize(16);
-                button.setBackgroundResource(R.drawable.an_border);
-                button.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        onButtonClicked(button);
-                    }
-                });
-                gridLayout.addView(button);
-                buttons[i][j] = button;
-            }
-        }
+        createTable();
 
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
@@ -127,6 +105,30 @@ public class tictactoe extends AppCompatActivity {
         });
     }
 
+    private void createTable() {
+        for (int i = 0; i < getTile; i++) {
+            for (int j = 0; j < getTile; j++) {
+                Button button = new Button(this);
+                GridLayout.LayoutParams params = new GridLayout.LayoutParams();
+                params.width = 80;
+                params.height = 80;
+                params.rowSpec = GridLayout.spec(i, 1, 1f);
+                params.columnSpec = GridLayout.spec(j, 1, 1f);
+                button.setLayoutParams(params);
+                button.setTextSize(16);
+                button.setBackgroundResource(R.drawable.an_border);
+                button.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        onButtonClicked(button);
+                    }
+                });
+                gridLayout.addView(button);
+                buttons[i][j] = button;
+            }
+        }
+    }
+
     private void onButtonClicked(Button button) {
         if (button.getText().toString().isEmpty()) {
             if (!playAgainstAI) {
@@ -148,6 +150,7 @@ public class tictactoe extends AppCompatActivity {
                 button.setForeground(ContextCompat.getDrawable(this, R.drawable.an_x));
                 player1Turn = false;
                 if (!checkWinner() && !player1Turn) {
+                    Handler handler = new Handler();
                     handler.postDelayed(new Runnable() {
                         @Override
                         public void run() {
@@ -305,7 +308,6 @@ public class tictactoe extends AppCompatActivity {
             countDownTimer.cancel();
         }
         countDownTimer = new CountDownTimer(totalTimeCountInMilliseconds, 1000) {
-
             @Override
             public void onTick(long millisUntilFinished) {
                 // Tính toán phần trăm để cập nhật ProgressBar
@@ -320,7 +322,21 @@ public class tictactoe extends AppCompatActivity {
                 countDownTimer.start();
             }
         };
-
         countDownTimer.start();
+    }
+
+    private MediaPlayer music(int musicFile) {
+        MediaPlayer mediaPlayer = MediaPlayer.create(this, musicFile);
+        mediaPlayer.setLooping(true);
+        return mediaPlayer;
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (mediaPlayer != null) {
+            mediaPlayer.release();
+            mediaPlayer = null;
+        }
     }
 }
