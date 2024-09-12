@@ -32,6 +32,7 @@ public class menu_FlipCard extends AppCompatActivity {
             public void onClick(View view) {
                 Intent i = new Intent(menu_FlipCard.this, menu_level_FlipCard.class);
                 startActivity(i);
+                finish();
             }
         });
         btnQuit.setOnClickListener(new View.OnClickListener() {
@@ -39,6 +40,7 @@ public class menu_FlipCard extends AppCompatActivity {
             public void onClick(View view) {
                 Intent i = new Intent(menu_FlipCard.this, Menu.class);
                 startActivity(i);
+                finish();
             }
         });
     }
