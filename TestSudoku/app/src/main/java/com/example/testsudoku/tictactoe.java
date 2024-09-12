@@ -31,7 +31,7 @@ public class tictactoe extends AppCompatActivity {
     boolean player1Turn = true;
     boolean playAgainstAI;
     int getTile;
-    MediaPlayer mediaPlayer;
+    MediaPlayer bg_sound;
     MediaPlayer winSound;
     boolean speaker = false;
     CountDownTimer countDownTimer;
@@ -51,7 +51,7 @@ public class tictactoe extends AppCompatActivity {
         gridLayout.setBackgroundResource(R.drawable.an_border);
         btnBack = findViewById(R.id.img_icon_back);
         btnMusic = findViewById(R.id.img_music);
-        mediaPlayer = music(R.raw.curious, true);
+        bg_sound = music(R.raw.curious, true);
 
         progressBar = findViewById(R.id.progressBar);
         progressBar.setMax(100);
@@ -82,7 +82,7 @@ public class tictactoe extends AppCompatActivity {
         btnBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                mediaPlayer.pause();
+                bg_sound.pause();
                 Intent intent = new Intent(tictactoe.this, menu_tictactoe.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
                 startActivity(intent);
@@ -95,11 +95,11 @@ public class tictactoe extends AppCompatActivity {
             public void onClick(View view) {
                 if (!speaker) {
                     btnMusic.setImageResource(R.drawable.an_music_on);
-                    mediaPlayer.start();
+                    bg_sound.start();
                     speaker = true;
                 } else {
                     btnMusic.setImageResource(R.drawable.an_music_off);
-                    mediaPlayer.pause();
+                    bg_sound.pause();
                     speaker = false;
                 }
             }
@@ -338,9 +338,9 @@ public class tictactoe extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        if (mediaPlayer != null) {
-            mediaPlayer.release();
-            mediaPlayer = null;
+        if (bg_sound != null) {
+            bg_sound.release();
+            bg_sound = null;
         }
         if (winSound != null) {
             winSound.release();
