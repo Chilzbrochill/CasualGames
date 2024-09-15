@@ -1,6 +1,7 @@
 package com.example.testsudoku;
 
 import android.content.Intent;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.view.View;
 import android.view.animation.Animation;
@@ -19,6 +20,8 @@ import androidx.core.view.WindowInsetsCompat;
 public class WinSudoku extends AppCompatActivity {
     private LinearLayout layoutDifficulty;
     private View opacityView;
+    private MediaPlayer mediaPlayer;
+    
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -36,6 +39,14 @@ public class WinSudoku extends AppCompatActivity {
         ImageView img_backHP = findViewById(R.id.img_backToHomePage);
         TextView tv_backHP = findViewById(R.id.tv_BackToHomePage);
         Button btn_newgame = findViewById(R.id.button_newgameSudoku);
+        ImageView audio = findViewById(R.id.img_audio);
+        ImageView noAudio = findViewById(R.id.img_noAudio);
+
+        mediaPlayer = MediaPlayer.create(this, R.raw.outtro_sudoku);
+        // Thiết lập phát nhạc lặp lại
+        mediaPlayer.setLooping(true);
+
+        mediaPlayer.start();
 
         Intent i = getIntent();
         String level = i.getStringExtra("level");
@@ -48,16 +59,24 @@ public class WinSudoku extends AppCompatActivity {
 
         Intent iBack = new Intent(WinSudoku.this, SudokuMenu.class);
         iBack.putExtra("point_win", point_win);
-
+        iBack.putExtra("reset", "1");
         img_backHP.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if (mediaPlayer != null) {
+                    mediaPlayer.release();  // Giải phóng MediaPlayer khi activity bị hủy
+                    mediaPlayer = null;
+                }
                 startActivity(iBack);
             }
         });
         tv_backHP.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if (mediaPlayer != null) {
+                    mediaPlayer.release();  // Giải phóng MediaPlayer khi activity bị hủy
+                    mediaPlayer = null;
+                }
                 startActivity(iBack);
             }
         });
@@ -84,6 +103,10 @@ public class WinSudoku extends AppCompatActivity {
                     @Override
                     public void onClick(View view) {
                         iNew.putExtra("count", "30");
+                        if (mediaPlayer != null) {
+                            mediaPlayer.release();  // Giải phóng MediaPlayer khi activity bị hủy
+                            mediaPlayer = null;
+                        }
                         startActivity(iNew);
                     }
                 });
@@ -91,6 +114,10 @@ public class WinSudoku extends AppCompatActivity {
                     @Override
                     public void onClick(View view) {
                         iNew.putExtra("count", "40");
+                        if (mediaPlayer != null) {
+                            mediaPlayer.release();  // Giải phóng MediaPlayer khi activity bị hủy
+                            mediaPlayer = null;
+                        }
                         startActivity(iNew);
                     }
                 });
@@ -98,9 +125,37 @@ public class WinSudoku extends AppCompatActivity {
                     @Override
                     public void onClick(View view) {
                         iNew.putExtra("count", "50");
+                        if (mediaPlayer != null) {
+                            mediaPlayer.release();  // Giải phóng MediaPlayer khi activity bị hủy
+                            mediaPlayer = null;
+                        }
                         startActivity(iNew);
                     }
                 });
+            }
+        });
+        audio.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                noAudio.setVisibility(View.VISIBLE);
+                audio.setVisibility(View.INVISIBLE);
+
+                if (mediaPlayer != null) {
+                    mediaPlayer.release();  // Giải phóng MediaPlayer khi activity bị hủy
+                    mediaPlayer = null;
+                }
+            }
+        });
+        noAudio.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                noAudio.setVisibility(View.INVISIBLE);
+                audio.setVisibility(View.VISIBLE);
+
+                if (mediaPlayer != null) {
+                    mediaPlayer.start();  // Giải phóng MediaPlayer khi activity bị hủy
+                    mediaPlayer = null;
+                }
             }
         });
     }
@@ -111,4 +166,5 @@ public class WinSudoku extends AppCompatActivity {
         layoutDifficulty.startAnimation(slideUp);
         opacityView.setVisibility(View.VISIBLE);// Áp dụng animation
     }
+
 }

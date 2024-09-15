@@ -25,8 +25,8 @@
 
     <ImageView
         android:id="@+id/img_backToSudokuMenu"
-        android:layout_width="20dp"
-        android:layout_height="20dp"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
         android:layout_marginStart="10dp"
         android:layout_marginTop="10dp"
         app:layout_constraintStart_toStartOf="parent"
@@ -76,11 +76,11 @@
         android:layout_marginStart="189dp"
         android:layout_marginTop="44dp"
         android:layout_marginEnd="190dp"
-        android:tint="#383838"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/main_layout"
-        app:srcCompat="@drawable/icons8_idea_64" />
+        app:srcCompat="@drawable/icons8_idea_64"
+        app:tint="#383838" />
 
     <TextView
         android:id="@+id/textView5"
@@ -93,6 +93,39 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imgBtnHint" />
+
+    <ImageView
+        android:id="@+id/img_noAudio"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="50dp"
+        android:visibility="invisible"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/icons8_no_audio_100" />
+
+    <ImageView
+        android:id="@+id/img_audio"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="50dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/icons8_audio_100" />
+
+    <ImageView
+        android:id="@+id/imageView5"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="10dp"
+        android:scaleType="fitCenter"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/icons8_gear_100"
+        app:tint="#2A2A2A" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

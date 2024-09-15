@@ -3,6 +3,7 @@ package com.example.testsudoku;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Handler;
@@ -48,6 +49,9 @@ public class Sudoku extends AppCompatActivity {
     JSONArray jsonArray;
     String jsonArrayString;
     String jsonArray2String;
+
+    private MediaPlayer mediaPlayer;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -62,8 +66,15 @@ public class Sudoku extends AppCompatActivity {
         //Khai báo các phần tử
         ImageView backToSudokuMenu = findViewById(R.id.img_backToSudokuMenu);
         ImageView hint = findViewById(R.id.imgBtnHint);
+        ImageView audio = findViewById(R.id.img_audio);
+        ImageView noAudio = findViewById(R.id.img_noAudio);
         timerTextView = findViewById(R.id.tv_timer);
-
+        mediaPlayer = MediaPlayer.create(this, R.raw.huy_bg);
+        // Thiết lập phát nhạc lặp lại
+        mediaPlayer.setLooping(true);
+        if (mediaPlayer != null) {
+            mediaPlayer.start();  // Phát âm thanh
+        }
         SharedPreferences sharedPreferences = getSharedPreferences("MyPrefs", MODE_PRIVATE);
 
         Intent intent = getIntent();
@@ -136,8 +147,15 @@ public class Sudoku extends AppCompatActivity {
                 editor.putString("array_solution", jsonArray2.toString());
                 editor.putInt("timeCount", secondsElapsed);
                 editor.apply();
+
+                if (mediaPlayer != null) {
+                    mediaPlayer.release();  // Giải phóng MediaPlayer khi activity bị hủy
+                    mediaPlayer = null;
+                }
                 Intent i = new Intent(Sudoku.this, SudokuMenu.class);
+                i.putExtra("continue_status", "continue");
                 startActivity(i);
+
             }
         });
         hint.setOnClickListener(new View.OnClickListener() {
@@ -159,7 +177,34 @@ public class Sudoku extends AppCompatActivity {
                 }
             }
         });
+        audio.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                noAudio.setVisibility(View.VISIBLE);
+                audio.setVisibility(View.INVISIBLE);
+
+                if (mediaPlayer != null) {
+                    mediaPlayer.release();  // Giải phóng MediaPlayer khi activity bị hủy
+                    mediaPlayer = null;
+                }
+            }
+        });
+        noAudio.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                noAudio.setVisibility(View.INVISIBLE);
+                audio.setVisibility(View.VISIBLE);
+
+                if (mediaPlayer != null) {
+                    mediaPlayer.start();  // Giải phóng MediaPlayer khi activity bị hủy
+                    mediaPlayer = null;
+                }
+            }
+        });
     }
+
+
+
     //Tạo ván mới
     private void makeNewGame(GridLayout sudokuGrid, int lvl_count){
         // Thêm các EditText vào GridLayout
@@ -216,6 +261,10 @@ public class Sudoku extends AppCompatActivity {
                                 i.putExtra("time",timeFormatted);
                                 i.putExtra("point_win", String.valueOf(point));
                                 i.putExtra("level", level);
+                                if (mediaPlayer != null) {
+                                    mediaPlayer.release();  // Giải phóng MediaPlayer khi activity bị hủy
+                                    mediaPlayer = null;
+                                }
                                 startActivity(i);
                             }
                         }
@@ -299,6 +348,10 @@ public class Sudoku extends AppCompatActivity {
                                 i.putExtra("time",timeFormatted);
                                 i.putExtra("point_win", String.valueOf(point));
                                 i.putExtra("level", level);
+                                if (mediaPlayer != null) {
+                                    mediaPlayer.release();  // Giải phóng MediaPlayer khi activity bị hủy
+                                    mediaPlayer = null;
+                                }
                                 startActivity(i);
                             }
                         }
@@ -360,6 +413,7 @@ public class Sudoku extends AppCompatActivity {
             for (int col = 0; col < 9; col++) {
                 if(continueCells[row][col] == 0){
                     sudokuCells[row][col].setText("");
+                    sudokuCells[row][col].setEnabled(true);
                 }else{
                     sudokuCells[row][col].setText(String.valueOf(continueCells[row][col]));
                 }

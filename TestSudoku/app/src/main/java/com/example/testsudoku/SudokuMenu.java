@@ -23,6 +23,7 @@ public class SudokuMenu extends AppCompatActivity {
     private View opacityView;
     int highest_point = 0;
     int getPoint = 0;
+    String status_continue = "";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -39,21 +40,37 @@ public class SudokuMenu extends AppCompatActivity {
         Button quitSudoku = findViewById(R.id.button_QuitSudoku);
         Button continueSudoku = findViewById(R.id.button_continueSudoku);
         TextView highest_point_tv = findViewById(R.id.tv_highestPoint);
-        Intent iGet = getIntent();
-        SharedPreferences sharedPreferences = getSharedPreferences("MyPrefs", MODE_PRIVATE);
 
-        if (iGet.hasExtra("point_win")){
-            if(!iGet.getStringExtra("point_win").isEmpty()) {
-                getPoint = Integer.parseInt(iGet.getStringExtra("point_win"));
-            }
-            if(getPoint>=highest_point){
+        Intent iGet = getIntent();
+        if(iGet.hasExtra("continue_status")){
+            status_continue = iGet.getStringExtra("continue_status");
+        }
+        SharedPreferences sharedPreferences = getSharedPreferences("MyPrefs", MODE_PRIVATE);
+        //Ghi dữ liệu vào cục bộ
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        if(iGet.hasExtra("reset") && iGet.getStringExtra("reset").equals("1")){
+            editor.remove("continue_status");
+            editor.apply();
+        }
+        if(sharedPreferences.getString("continue_status", "").equals("continue")){
+            status_continue = sharedPreferences.getString("continue_status", "");
+        }
+
+        if(status_continue.equals("continue")){
+            continueSudoku.setVisibility(View.VISIBLE);
+            editor.putString("continue_status", status_continue);
+            editor.apply();  // Sử dụng apply() hoặc commit()
+        }else{
+            continueSudoku.setVisibility(View.INVISIBLE);
+        }
+
+        if (iGet.hasExtra("point_win") && !iGet.getStringExtra("point_win").isEmpty()) {
+            getPoint = Integer.parseInt(iGet.getStringExtra("point_win"));
+            if (getPoint >= highest_point) {
                 highest_point = getPoint;
                 highest_point_tv.setText("Điểm cao nhất : " + highest_point);
-
-                //Ghi dữ liệu vào cục bộ
-                SharedPreferences.Editor editor = sharedPreferences.edit();
                 editor.putInt("highest_point", highest_point);
-                editor.apply();  // Sử dụng apply() hoặc commit()
+                editor.apply(); // Lưu điểm cao nhất vào SharedPreferences
             }
         }
 
