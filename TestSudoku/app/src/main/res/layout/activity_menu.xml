@@ -8,14 +8,20 @@
     android:background="@drawable/huy_menu_bg"
     tools:context=".Menu">
 
+    <View
+        android:id="@+id/backgroundOverlay"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#50000000" />
+
     <TextView
         android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="36dp"
+        android:layout_marginTop="25dp"
         android:text="Casual Games"
         android:textAlignment="center"
-        android:textColor="#9FC1A0"
+        android:textColor="#F2EDED"
         android:textSize="34sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
@@ -28,12 +34,11 @@
         android:layout_height="120dp"
         android:layout_marginTop="40dp"
         android:layout_marginEnd="48dp"
-        android:background="@drawable/rounded_corners"
         android:clipToOutline="true"
-        android:scaleType="centerCrop"
+        android:scaleType="fitXY"
+        android:src="@drawable/an_logo3"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView"
-        app:srcCompat="@drawable/tiktoktoe" />
+        app:layout_constraintTop_toBottomOf="@+id/textView" />
 
 
     <ImageView
@@ -54,7 +59,7 @@
         android:layout_marginTop="15dp"
         android:text="Sudoku"
         android:textAlignment="center"
-        android:textColor="#9FC1A0"
+        android:textColor="#F2EDED"
         android:textSize="20sp"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
@@ -64,11 +69,11 @@
         android:id="@+id/textView10"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="12dp"
+        android:layout_marginTop="15dp"
         android:layout_marginEnd="52dp"
         android:text="Tic Tac Toe"
         android:textAlignment="center"
-        android:textColor="#9FC1A0"
+        android:textColor="#F2EDED"
         android:textSize="20sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
@@ -79,7 +84,7 @@
         android:layout_width="120dp"
         android:layout_height="120dp"
         android:layout_marginStart="48dp"
-        android:layout_marginTop="48dp"
+        android:layout_marginTop="40dp"
         android:background="@drawable/rounded_corners"
         android:clipToOutline="true"
         android:scaleType="centerInside"
@@ -94,7 +99,7 @@
         android:layout_marginStart="72dp"
         android:layout_marginTop="15dp"
         android:text="Flip Card"
-        android:textColor="#9FC1A0"
+        android:textColor="#F2EDED"
         android:textSize="20sp"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
@@ -104,19 +109,20 @@
         android:id="@+id/food_fusion_frenzy"
         android:layout_width="120dp"
         android:layout_height="120dp"
-        android:layout_marginTop="48dp"
+        android:layout_marginTop="40dp"
         android:layout_marginEnd="48dp"
+        android:src="@drawable/duong_food_fusion_frenzy"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView10"
-        android:src="@drawable/duong_food_fusion_frenzy" />
+        app:layout_constraintTop_toBottomOf="@+id/textView10" />
 
     <TextView
         android:id="@+id/textView6"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="12dp"
+        android:layout_marginTop="15dp"
         android:layout_marginEnd="16dp"
         android:text="Fruits Fusion Frenzy"
+        android:textColor="#F2EDED"
         android:textSize="20sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
@@ -127,7 +133,7 @@
         android:layout_width="120dp"
         android:layout_height="120dp"
         android:layout_marginStart="48dp"
-        android:layout_marginTop="48dp"
+        android:layout_marginTop="40dp"
         android:background="@drawable/trong_bg_logo_menu"
         android:scaleType="centerInside"
         app:layout_constraintStart_toStartOf="parent"
@@ -141,7 +147,7 @@
         android:layout_marginStart="40dp"
         android:layout_marginTop="15dp"
         android:text="Catch The Word"
-        android:textColor="#9FC1A0"
+        android:textColor="#F2EDED"
         android:textSize="20sp"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"

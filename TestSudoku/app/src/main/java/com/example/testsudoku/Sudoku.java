@@ -150,7 +150,7 @@ public class Sudoku extends AppCompatActivity {
         });
 
         timerTextView = findViewById(R.id.tv_timer);
-        mediaPlayer = MediaPlayer.create(this, R.raw.huy_bg);
+        mediaPlayer = MediaPlayer.create(this, R.raw.huy_bgm1);
         // Thiết lập phát nhạc lặp lại
         mediaPlayer.setLooping(true);
         if (mediaPlayer != null) {
@@ -293,7 +293,7 @@ public class Sudoku extends AppCompatActivity {
             public void onClick(View view) {
                 noAudio.setVisibility(View.INVISIBLE);
                 audio.setVisibility(View.VISIBLE);
-                mediaPlayer = MediaPlayer.create(Sudoku.this, R.raw.huy_bg);
+                mediaPlayer = MediaPlayer.create(Sudoku.this, R.raw.huy_bgm1);
                 // Thiết lập phát nhạc lặp lại
                 mediaPlayer.setLooping(true);
                 mediaPlayer.start();
