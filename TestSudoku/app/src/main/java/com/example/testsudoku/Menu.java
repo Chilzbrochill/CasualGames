@@ -32,6 +32,7 @@ public class Menu extends AppCompatActivity {
             public void onClick(View view) {
                 Intent i = new Intent(Menu.this, SudokuMenu.class);
                 startActivity(i);
+                finish();
             }
         });
 
@@ -40,6 +41,7 @@ public class Menu extends AppCompatActivity {
             public void onClick(View view) {
                 Intent i = new Intent(Menu.this, menu_FlipCard.class);
                 startActivity(i);
+                finish();
             }
         });
 
@@ -48,6 +50,7 @@ public class Menu extends AppCompatActivity {
             public void onClick(View view) {
                 Intent i = new Intent(Menu.this, menu_tictactoe.class);
                 startActivity(i);
+                finish();
             }
         });
     }

@@ -68,6 +68,7 @@ public class WinSudoku extends AppCompatActivity {
                     mediaPlayer = null;
                 }
                 startActivity(iBack);
+                finish();
             }
         });
         tv_backHP.setOnClickListener(new View.OnClickListener() {
@@ -78,6 +79,7 @@ public class WinSudoku extends AppCompatActivity {
                     mediaPlayer = null;
                 }
                 startActivity(iBack);
+                finish();
             }
         });
         layoutDifficulty = findViewById(R.id.layoutDifficulty);
@@ -109,6 +111,7 @@ public class WinSudoku extends AppCompatActivity {
                             mediaPlayer = null;
                         }
                         startActivity(iNew);
+                        finish();
                     }
                 });
                 medium.setOnClickListener(new View.OnClickListener() {
@@ -120,6 +123,7 @@ public class WinSudoku extends AppCompatActivity {
                             mediaPlayer = null;
                         }
                         startActivity(iNew);
+                        finish();
                     }
                 });
                 hard.setOnClickListener(new View.OnClickListener() {
@@ -131,6 +135,7 @@ public class WinSudoku extends AppCompatActivity {
                             mediaPlayer = null;
                         }
                         startActivity(iNew);
+                        finish();
                     }
                 });
             }
@@ -152,11 +157,10 @@ public class WinSudoku extends AppCompatActivity {
             public void onClick(View view) {
                 noAudio.setVisibility(View.INVISIBLE);
                 audio.setVisibility(View.VISIBLE);
-
-                if (mediaPlayer != null) {
-                    mediaPlayer.start();  // Giải phóng MediaPlayer khi activity bị hủy
-                    mediaPlayer = null;
-                }
+                mediaPlayer = MediaPlayer.create(WinSudoku.this, R.raw.outtro_sudoku);
+                // Thiết lập phát nhạc lặp lại
+                mediaPlayer.setLooping(true);
+                mediaPlayer.start();
             }
         });
     }

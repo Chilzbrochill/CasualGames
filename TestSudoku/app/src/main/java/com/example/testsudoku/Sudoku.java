@@ -3,6 +3,7 @@ package com.example.testsudoku;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.CountDownTimer;
@@ -14,15 +15,18 @@ import android.text.TextWatcher;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.GridLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import androidx.activity.EdgeToEdge;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
@@ -49,7 +53,7 @@ public class Sudoku extends AppCompatActivity {
     JSONArray jsonArray;
     String jsonArrayString;
     String jsonArray2String;
-
+    int hint_count = 3;
     private MediaPlayer mediaPlayer;
 
     @Override
@@ -64,22 +68,108 @@ public class Sudoku extends AppCompatActivity {
         });
 
         //Khai báo các phần tử
+        ConstraintLayout main = findViewById(R.id.main);
         ImageView backToSudokuMenu = findViewById(R.id.img_backToSudokuMenu);
         ImageView hint = findViewById(R.id.imgBtnHint);
         ImageView audio = findViewById(R.id.img_audio);
         ImageView noAudio = findViewById(R.id.img_noAudio);
+        ImageView settingOpen = findViewById(R.id.img_setting);
+        ConstraintLayout settingLayout = findViewById(R.id.settingLayout);
+        View bg_overlay = findViewById(R.id.backgroundOverlay);
+        Button bg_blue = findViewById(R.id.btn_blue);
+        Button bg_green = findViewById(R.id.btn_green);
+        Button bg_yellow = findViewById(R.id.btn_yellow);
+        Button bg_red = findViewById(R.id.btn_red);
+        Button bg_white = findViewById(R.id.btn_white);
+        TextView tv_hint_count = findViewById(R.id.tv_hint_count);
+
+        settingOpen.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                settingLayout.setVisibility(View.VISIBLE);
+                bg_overlay.setVisibility(View.VISIBLE);
+            }
+        });
+        bg_overlay.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                settingLayout.setVisibility(View.INVISIBLE);
+                bg_overlay.setVisibility(View.INVISIBLE);
+            }
+        });
+
+        bg_blue.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                main.setBackgroundResource(R.drawable.huy_blue_bg_2);
+                settingOpen.setColorFilter(Color.parseColor("#FFFFFF"), PorterDuff.Mode.SRC_IN);
+                audio.setColorFilter(Color.parseColor("#FFFFFF"), PorterDuff.Mode.SRC_IN);
+                noAudio.setColorFilter(Color.parseColor("#FFFFFF"), PorterDuff.Mode.SRC_IN);
+                hint.setColorFilter(Color.parseColor("#FFFFFF"), PorterDuff.Mode.SRC_IN);
+            }
+        });
+        bg_yellow.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                main.setBackgroundResource(R.drawable.huy_yellow_bg);
+                settingOpen.setColorFilter(Color.parseColor("#FFFFFF"), PorterDuff.Mode.SRC_IN);
+                audio.setColorFilter(Color.parseColor("#FFFFFF"), PorterDuff.Mode.SRC_IN);
+                noAudio.setColorFilter(Color.parseColor("#FFFFFF"), PorterDuff.Mode.SRC_IN);
+                hint.setColorFilter(Color.parseColor("#FFFFFF"), PorterDuff.Mode.SRC_IN);
+            }
+        });
+        bg_red.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                main.setBackgroundResource(R.drawable.huy_red_bg);
+                settingOpen.setColorFilter(Color.parseColor("#FFFFFF"), PorterDuff.Mode.SRC_IN);
+                audio.setColorFilter(Color.parseColor("#FFFFFF"), PorterDuff.Mode.SRC_IN);
+                noAudio.setColorFilter(Color.parseColor("#FFFFFF"), PorterDuff.Mode.SRC_IN);
+                hint.setColorFilter(Color.parseColor("#FFFFFF"), PorterDuff.Mode.SRC_IN);
+            }
+        });
+        bg_green.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                main.setBackgroundResource(R.drawable.huy_green_bg);
+                settingOpen.setColorFilter(Color.parseColor("#FFFFFF"), PorterDuff.Mode.SRC_IN);
+                audio.setColorFilter(Color.parseColor("#FFFFFF"), PorterDuff.Mode.SRC_IN);
+                noAudio.setColorFilter(Color.parseColor("#FFFFFF"), PorterDuff.Mode.SRC_IN);
+                hint.setColorFilter(Color.parseColor("#FFFFFF"), PorterDuff.Mode.SRC_IN);
+            }
+        });
+        bg_white.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                main.setBackgroundColor(Color.parseColor("#FFFFFF"));
+                settingOpen.setColorFilter(Color.parseColor("#000000"), PorterDuff.Mode.SRC_IN);
+                audio.setColorFilter(Color.parseColor("#000000"), PorterDuff.Mode.SRC_IN);
+                noAudio.setColorFilter(Color.parseColor("#000000"), PorterDuff.Mode.SRC_IN);
+                hint.setColorFilter(Color.parseColor("#000000"), PorterDuff.Mode.SRC_IN);
+            }
+        });
+
         timerTextView = findViewById(R.id.tv_timer);
         mediaPlayer = MediaPlayer.create(this, R.raw.huy_bg);
         // Thiết lập phát nhạc lặp lại
         mediaPlayer.setLooping(true);
         if (mediaPlayer != null) {
             mediaPlayer.start();  // Phát âm thanh
-        }
-        SharedPreferences sharedPreferences = getSharedPreferences("MyPrefs", MODE_PRIVATE);
-
-        Intent intent = getIntent();
+        } Intent intent = getIntent();
         //Lấy dữ liệu về lệnh chơi hay tiếp tục
         String play_command = intent.getStringExtra("play");
+
+        SharedPreferences sharedPreferences = getSharedPreferences("HuyPrefs", MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+
+        if(play_command.equals("new")){
+            hint_count = 3;
+        }else {
+            hint_count = sharedPreferences.getInt("hint_count_save", 3);
+        }
+        tv_hint_count.setText(String.valueOf(hint_count));
+
+
         //Lấy dữ liệu về độ khó
         int lvl_count = Integer.parseInt(Objects.requireNonNull(intent.getStringExtra("count")));
 
@@ -155,12 +245,16 @@ public class Sudoku extends AppCompatActivity {
                 Intent i = new Intent(Sudoku.this, SudokuMenu.class);
                 i.putExtra("continue_status", "continue");
                 startActivity(i);
-
+                finish();
             }
         });
         hint.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if(hint_count <= 0){
+                    return;
+                }
+                SharedPreferences.Editor editor = sharedPreferences.edit();
                 boolean hinted = false;
                 for (int i = 0; i<9; i++){
                     for (int j = 0; j<9; j++){
@@ -175,6 +269,11 @@ public class Sudoku extends AppCompatActivity {
                         break;
                     }
                 }
+                hint_count--;
+
+                editor.putInt("hint_count_save", hint_count);
+                editor.apply();
+                tv_hint_count.setText(String.valueOf(hint_count));
             }
         });
         audio.setOnClickListener(new View.OnClickListener() {
@@ -201,8 +300,6 @@ public class Sudoku extends AppCompatActivity {
             }
         });
     }
-
-
 
     //Tạo ván mới
     private void makeNewGame(GridLayout sudokuGrid, int lvl_count){

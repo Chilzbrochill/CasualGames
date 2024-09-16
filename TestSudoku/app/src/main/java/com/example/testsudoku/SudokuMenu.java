@@ -105,6 +105,7 @@ public class SudokuMenu extends AppCompatActivity {
                         i.putExtra("play", "new");
                         i.putExtra("count", "30");
                         startActivity(i);
+                        finish();
                     }
                 });
                 medium.setOnClickListener(new View.OnClickListener() {
@@ -113,6 +114,7 @@ public class SudokuMenu extends AppCompatActivity {
                         i.putExtra("play", "new");
                         i.putExtra("count", "40");
                         startActivity(i);
+                        finish();
                     }
                 });
                 hard.setOnClickListener(new View.OnClickListener() {
@@ -121,6 +123,7 @@ public class SudokuMenu extends AppCompatActivity {
                         i.putExtra("play", "new");
                         i.putExtra("count", "50");
                         startActivity(i);
+                        finish();
                     }
                 });
             }
@@ -140,6 +143,7 @@ public class SudokuMenu extends AppCompatActivity {
             public void onClick(View view) {
                 Intent i = new Intent(SudokuMenu.this, Menu.class);
                 startActivity(i);
+                finish();
             }
         });
     }
@@ -150,6 +154,4 @@ public class SudokuMenu extends AppCompatActivity {
         layoutDifficulty.startAnimation(slideUp);
         opacityView.setVisibility(View.VISIBLE);// Áp dụng animation
     }
-
-
 }
