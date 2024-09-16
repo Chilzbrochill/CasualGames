@@ -29,10 +29,14 @@ android {
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
     }
+    buildFeatures {
+        viewBinding = true
+        dataBinding = true
+    }
 }
 
 dependencies {
-
+    implementation("androidx.fragment:fragment:1.5.5")
     implementation(libs.appcompat)
     implementation(libs.material)
     implementation(libs.activity)
