@@ -10,8 +10,8 @@
 
     <ImageView
         android:id="@+id/imageView3"
-        android:layout_width="416dp"
-        android:layout_height="300dp"
+        android:layout_width="425dp"
+        android:layout_height="209dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
@@ -20,15 +20,15 @@
 
     <TextView
         android:id="@+id/textView2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="386dp"
+        android:layout_height="515dp"
         android:layout_marginStart="5dp"
-        android:layout_marginTop="220dp"
+        android:layout_marginTop="136dp"
         android:layout_marginEnd="5dp"
         android:text="Chào mừng bạn đến với &quot;Who's smart&quot;. Đây là một tựa game tổng hợp kiến thức như văn học, đời sống, toán,... Nếu muốn hoàn thành trò chơi thì bạn cũng phải có một số kiến thức nhất định. Game cũng có phần góp ý để bạn có thể đóng góp những câu hỏi hay cho chúng tôi. Cách chơi cũng rất đơn giản, bạn chỉ cần điền câu trả lời của bạn và nhấn &quot;Check&quot;, nếu muốn qua câu hỏi khác bạn có thể nhấn &quot;Next question&quot; và gợi ý là &quot;Hint&quot;. Đây chỉ là game kiểm tra kiến thức, cũng không có tính điểm nên bạn cứ thoải mái suy nghĩ nhé :D!"
         android:textSize="26sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.322"
+        app:layout_constraintHorizontal_bias="0.6"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
