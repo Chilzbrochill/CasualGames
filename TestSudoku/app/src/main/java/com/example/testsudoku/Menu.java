@@ -12,7 +12,7 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 public class Menu extends AppCompatActivity {
-
+    private ImageView imgCatchTheWorld;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -26,7 +26,7 @@ public class Menu extends AppCompatActivity {
         ImageView sudoku = findViewById(R.id.img_Sudoku);
         ImageView flipcard = findViewById(R.id.img_FlipCard);
         ImageView caro = findViewById(R.id.img_Caro);
-
+        imgCatchTheWorld = findViewById(R.id.imgCatchTheWorld);
         sudoku.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -50,6 +50,14 @@ public class Menu extends AppCompatActivity {
                 startActivity(i);
             }
         });
+
+        imgCatchTheWorld.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(Menu.this, trong_mainActivity.class));
+            }
+        });
+
     }
 
 

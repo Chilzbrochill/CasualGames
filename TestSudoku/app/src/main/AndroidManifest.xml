@@ -37,6 +37,18 @@
             android:name=".tictactoe"
             android:exported="false" />
         <activity
+            android:name=".trong_tutorialActivity"
+            android:exported="false" />
+        <activity
+            android:name=".trong_viewAddQuesActivity"
+            android:exported="false" />
+        <activity
+            android:name=".trong_viewPlayActivity"
+            android:exported="false" />
+        <activity
+            android:name=".trong_mainActivity"
+            android:exported="false"/>
+        <activity
             android:name=".Menu"
             android:exported="true">
             <intent-filter>
