@@ -194,11 +194,10 @@ public class Sudoku extends AppCompatActivity {
             public void onClick(View view) {
                 noAudio.setVisibility(View.INVISIBLE);
                 audio.setVisibility(View.VISIBLE);
-
-                if (mediaPlayer != null) {
-                    mediaPlayer.start();  // Giải phóng MediaPlayer khi activity bị hủy
-                    mediaPlayer = null;
-                }
+                mediaPlayer = MediaPlayer.create(Sudoku.this, R.raw.huy_bg);
+                // Thiết lập phát nhạc lặp lại
+                mediaPlayer.setLooping(true);
+                mediaPlayer.start();
             }
         });
     }

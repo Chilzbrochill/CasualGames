@@ -92,6 +92,7 @@ public class WinSudoku extends AppCompatActivity {
             }
         });
         Intent iNew = new Intent(WinSudoku.this, Sudoku.class);
+        iNew.putExtra("play", "new");
         btn_newgame.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
