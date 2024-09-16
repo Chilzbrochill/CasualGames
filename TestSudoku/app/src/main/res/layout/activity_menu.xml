@@ -5,7 +5,7 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#D3D0D0"
+    android:background="#DBB0AD"
     tools:context=".Menu">
 
     <TextView
@@ -22,57 +22,123 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
-    android:id="@+id/imageView15"
-    android:layout_width="120dp"
-    android:layout_height="120dp"
-    android:layout_marginTop="44dp"
-    android:layout_marginEnd="48dp"
-    android:background="@drawable/rounded_corners"
-    android:clipToOutline="true"
-    android:scaleType="centerCrop"
-    app:layout_constraintEnd_toEndOf="parent"
-    app:layout_constraintTop_toBottomOf="@+id/textView"
-    app:srcCompat="@drawable/tiktoktoe" />
-
-    <ImageView
-        android:id="@+id/imageView16"
+        android:id="@+id/img_Caro"
         android:layout_width="120dp"
         android:layout_height="120dp"
-        android:layout_marginStart="64dp"
-        android:layout_marginTop="44dp"
-        android:scaleType="fitCenter"
+        android:layout_marginTop="40dp"
+        android:layout_marginEnd="48dp"
+        android:background="@drawable/rounded_corners"
         android:clipToOutline="true"
-        app:layout_constraintStart_toStartOf="parent"
+        android:scaleType="centerCrop"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView"
-        app:srcCompat="@drawable/sudoku__1_"
-        android:background="@drawable/rounded_corners" />
+        app:srcCompat="@drawable/tiktoktoe" />
 
+
+    <ImageView
+        android:id="@+id/img_Sudoku"
+        android:layout_width="120dp"
+        android:layout_height="120dp"
+        android:layout_marginStart="48dp"
+        android:layout_marginTop="40dp"
+        android:background="@drawable/sudoku__2_"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView" />
 
     <TextView
         android:id="@+id/textView9"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="88dp"
-        android:layout_marginTop="24dp"
+        android:layout_marginStart="72dp"
+        android:layout_marginTop="15dp"
         android:text="Sudoku"
         android:textAlignment="center"
         android:textSize="20sp"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView16" />
+        app:layout_constraintTop_toBottomOf="@+id/img_Sudoku" />
 
     <TextView
         android:id="@+id/textView10"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
+        android:layout_marginTop="15dp"
         android:layout_marginEnd="68dp"
         android:text="Cờ Caro"
         android:textAlignment="center"
         android:textSize="20sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView15" />
+        app:layout_constraintTop_toBottomOf="@+id/img_Caro" />
+
+    <ImageView
+        android:id="@+id/img_FlipCard"
+        android:layout_width="120dp"
+        android:layout_height="120dp"
+        android:layout_marginStart="48dp"
+        android:layout_marginTop="48dp"
+        android:background="@drawable/rounded_corners"
+        android:clipToOutline="true"
+        android:scaleType="centerInside"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView9"
+        app:srcCompat="@drawable/vietvg_title_3_" />
+
+    <TextView
+        android:id="@+id/textView3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="72dp"
+        android:layout_marginTop="15dp"
+        android:text="Flip Card"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/img_FlipCard" />
+
+    <ImageView
+        android:id="@+id/img_CombineFruit"
+        android:layout_width="120dp"
+        android:layout_height="120dp"
+        android:layout_marginTop="48dp"
+        android:layout_marginEnd="48dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView10"
+        tools:srcCompat="@tools:sample/avatars" />
+
+    <TextView
+        android:id="@+id/textView6"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:layout_marginEnd="40dp"
+        android:text="Combine Fruit"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/img_CombineFruit" />
+
+    <ImageView
+        android:id="@+id/imageView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="48dp"
+        android:layout_marginTop="48dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView3"
+        tools:srcCompat="@tools:sample/avatars" />
+
+    <TextView
+        android:id="@+id/textView12"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="40dp"
+        android:layout_marginTop="15dp"
+        android:text="Catch The Word"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageView2" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
