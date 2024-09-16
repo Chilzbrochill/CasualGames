@@ -64,9 +64,9 @@
         android:id="@+id/textView10"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="15dp"
-        android:layout_marginEnd="68dp"
-        android:text="Cờ Caro"
+        android:layout_marginTop="12dp"
+        android:layout_marginEnd="52dp"
+        android:text="Tic Tac Toe"
         android:textAlignment="center"
         android:textColor="#9FC1A0"
         android:textSize="20sp"
@@ -101,27 +101,26 @@
         app:layout_constraintTop_toBottomOf="@+id/img_FlipCard" />
 
     <ImageView
-        android:id="@+id/img_CombineFruit"
+        android:id="@+id/food_fusion_frenzy"
         android:layout_width="120dp"
         android:layout_height="120dp"
         android:layout_marginTop="48dp"
         android:layout_marginEnd="48dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView10"
-        tools:srcCompat="@tools:sample/avatars" />
+        android:src="@drawable/duong_food_fusion_frenzy" />
 
     <TextView
         android:id="@+id/textView6"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="15dp"
-        android:layout_marginEnd="40dp"
-        android:text="Combine Fruit"
-        android:textColor="#9FC1A0"
+        android:layout_marginTop="12dp"
+        android:layout_marginEnd="16dp"
+        android:text="Fruits Fusion Frenzy"
         android:textSize="20sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/img_CombineFruit" />
+        app:layout_constraintTop_toBottomOf="@+id/food_fusion_frenzy" />
 
     <ImageView
         android:id="@+id/imageView2"

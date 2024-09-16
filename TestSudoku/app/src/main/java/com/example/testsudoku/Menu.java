@@ -26,7 +26,7 @@ public class Menu extends AppCompatActivity {
         ImageView sudoku = findViewById(R.id.img_Sudoku);
         ImageView flipcard = findViewById(R.id.img_FlipCard);
         ImageView caro = findViewById(R.id.img_Caro);
-
+        ImageView food_fusion_frenzy = findViewById(R.id.food_fusion_frenzy);
         sudoku.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -51,6 +51,22 @@ public class Menu extends AppCompatActivity {
                 Intent i = new Intent(Menu.this, menu_tictactoe.class);
                 startActivity(i);
                 finish();
+            }
+        });
+
+        caro.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent(Menu.this, menu_tictactoe.class);
+                startActivity(i);
+            }
+        });
+
+        food_fusion_frenzy.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent(Menu.this, duong_PageClickActivity.class);
+                startActivity(i);
             }
         });
     }
