@@ -64,6 +64,7 @@ public class menu_tictactoe extends AppCompatActivity {
                 intent.putExtra("playAI", true);
                 intent.putExtra("tile", 3);
                 startActivity(intent);
+                finish();
             }
         });
 
@@ -212,6 +213,7 @@ public class menu_tictactoe extends AppCompatActivity {
         Intent intent = new Intent(menu_tictactoe.this, tictactoe.class);
         intent.putExtra("tile", value);
         startActivity(intent);
+        finish();
     }
 
     private void hideAndShow(int val1, int val2) {

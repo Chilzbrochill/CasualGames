@@ -76,6 +76,7 @@ public class menu_level_FlipCard extends AppCompatActivity {
                     Intent i = new Intent(menu_level_FlipCard.this, FlipCard.class);
                     i.putExtra("level", String.valueOf(levelIndex));
                     startActivity(i);
+                    finish();
                 }
             });
 
