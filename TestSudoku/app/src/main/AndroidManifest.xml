@@ -13,6 +13,9 @@
         android:theme="@style/Theme.TestSudoku"
         tools:targetApi="31">
         <activity
+            android:name=".duong_PageClickActivity"
+            android:exported="false" />
+        <activity
             android:name=".WinSudoku"
             android:exported="false" />
         <activity
