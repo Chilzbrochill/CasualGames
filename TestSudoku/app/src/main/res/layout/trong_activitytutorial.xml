@@ -51,6 +51,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Chào mừng bạn đến với &quot;Who's smart&quot;. Đây là một tựa game tổng hợp kiến thức như văn học, đời sống, toán,... Nếu muốn hoàn thành trò chơi thì bạn cũng phải có một số kiến thức nhất định. Game cũng có phần góp ý để bạn có thể đóng góp những câu hỏi hay cho chúng tôi. Cách chơi cũng rất đơn giản, bạn chỉ cần điền câu trả lời của bạn và nhấn &quot;Check&quot;, nếu muốn qua câu hỏi khác bạn có thể nhấn &quot;Next question&quot; và gợi ý là &quot;Hint&quot;. Đây chỉ là game kiểm tra kiến thức, cũng không có tính điểm nên bạn cứ thoải mái suy nghĩ nhé :D!"
+                android:textColor="#000000"
+                android:textColorLink="#000000"
                 android:textSize="26sp" />
         </LinearLayout>
     </ScrollView>
