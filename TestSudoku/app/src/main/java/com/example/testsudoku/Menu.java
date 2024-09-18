@@ -75,6 +75,7 @@ public class Menu extends AppCompatActivity {
             public void onClick(View view) {
                 Intent i = new Intent(Menu.this, trong_mainActivity.class);
                 startActivity(i);
+                finish();
             }
         });
     }
