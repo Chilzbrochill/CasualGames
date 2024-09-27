@@ -55,7 +55,6 @@ public class Sudoku extends AppCompatActivity {
     String jsonArray2String;
     int hint_count = 3;
     private MediaPlayer mediaPlayer;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -83,6 +82,10 @@ public class Sudoku extends AppCompatActivity {
         Button bg_white = findViewById(R.id.btn_white);
         TextView tv_hint_count = findViewById(R.id.tv_hint_count);
 
+
+        SharedPreferences sharedPreferences = getSharedPreferences("HuyPrefs", MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+
         settingOpen.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -106,16 +109,24 @@ public class Sudoku extends AppCompatActivity {
                 audio.setColorFilter(Color.parseColor("#FFFFFF"), PorterDuff.Mode.SRC_IN);
                 noAudio.setColorFilter(Color.parseColor("#FFFFFF"), PorterDuff.Mode.SRC_IN);
                 hint.setColorFilter(Color.parseColor("#FFFFFF"), PorterDuff.Mode.SRC_IN);
+                backToSudokuMenu.setColorFilter(Color.parseColor("#FFFFFF"), PorterDuff.Mode.SRC_IN);
+                timerTextView.setTextColor(Color.parseColor("#FFFFFF"));
+                editor.putString("bg", "blue");
+                editor.apply();
             }
         });
         bg_yellow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 main.setBackgroundResource(R.drawable.huy_yellow_bg);
-                settingOpen.setColorFilter(Color.parseColor("#FFFFFF"), PorterDuff.Mode.SRC_IN);
-                audio.setColorFilter(Color.parseColor("#FFFFFF"), PorterDuff.Mode.SRC_IN);
-                noAudio.setColorFilter(Color.parseColor("#FFFFFF"), PorterDuff.Mode.SRC_IN);
-                hint.setColorFilter(Color.parseColor("#FFFFFF"), PorterDuff.Mode.SRC_IN);
+                settingOpen.setColorFilter(Color.parseColor("#000000"), PorterDuff.Mode.SRC_IN);
+                audio.setColorFilter(Color.parseColor("#000000"), PorterDuff.Mode.SRC_IN);
+                noAudio.setColorFilter(Color.parseColor("#000000"), PorterDuff.Mode.SRC_IN);
+                hint.setColorFilter(Color.parseColor("#000000"), PorterDuff.Mode.SRC_IN);
+                backToSudokuMenu.setColorFilter(Color.parseColor("#000000"), PorterDuff.Mode.SRC_IN);
+                timerTextView.setTextColor(Color.parseColor("#000000"));
+                editor.putString("bg", "yellow");
+                editor.apply();
             }
         });
         bg_red.setOnClickListener(new View.OnClickListener() {
@@ -126,6 +137,10 @@ public class Sudoku extends AppCompatActivity {
                 audio.setColorFilter(Color.parseColor("#FFFFFF"), PorterDuff.Mode.SRC_IN);
                 noAudio.setColorFilter(Color.parseColor("#FFFFFF"), PorterDuff.Mode.SRC_IN);
                 hint.setColorFilter(Color.parseColor("#FFFFFF"), PorterDuff.Mode.SRC_IN);
+                backToSudokuMenu.setColorFilter(Color.parseColor("#FFFFFF"), PorterDuff.Mode.SRC_IN);
+                timerTextView.setTextColor(Color.parseColor("#FFFFFF"));
+                editor.putString("bg", "red");
+                editor.apply();
             }
         });
         bg_green.setOnClickListener(new View.OnClickListener() {
@@ -136,6 +151,10 @@ public class Sudoku extends AppCompatActivity {
                 audio.setColorFilter(Color.parseColor("#FFFFFF"), PorterDuff.Mode.SRC_IN);
                 noAudio.setColorFilter(Color.parseColor("#FFFFFF"), PorterDuff.Mode.SRC_IN);
                 hint.setColorFilter(Color.parseColor("#FFFFFF"), PorterDuff.Mode.SRC_IN);
+                backToSudokuMenu.setColorFilter(Color.parseColor("#FFFFFF"), PorterDuff.Mode.SRC_IN);
+                timerTextView.setTextColor(Color.parseColor("#FFFFFF"));
+                editor.putString("bg", "green");
+                editor.apply();
             }
         });
         bg_white.setOnClickListener(new View.OnClickListener() {
@@ -146,6 +165,10 @@ public class Sudoku extends AppCompatActivity {
                 audio.setColorFilter(Color.parseColor("#000000"), PorterDuff.Mode.SRC_IN);
                 noAudio.setColorFilter(Color.parseColor("#000000"), PorterDuff.Mode.SRC_IN);
                 hint.setColorFilter(Color.parseColor("#000000"), PorterDuff.Mode.SRC_IN);
+                backToSudokuMenu.setColorFilter(Color.parseColor("#000000"), PorterDuff.Mode.SRC_IN);
+                timerTextView.setTextColor(Color.parseColor("#000000"));
+                editor.putString("bg", "white");
+                editor.apply();
             }
         });
 
@@ -159,16 +182,59 @@ public class Sudoku extends AppCompatActivity {
         //Lấy dữ liệu về lệnh chơi hay tiếp tục
         String play_command = intent.getStringExtra("play");
 
-        SharedPreferences sharedPreferences = getSharedPreferences("HuyPrefs", MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-
         if(play_command.equals("new")){
             hint_count = 3;
+            editor.remove("hint_count_save");
+            editor.apply();
         }else {
             hint_count = sharedPreferences.getInt("hint_count_save", 3);
         }
+        if (sharedPreferences.contains("bg")){
+            if(sharedPreferences.getString("bg" ,null).equals("blue")){
+                main.setBackgroundResource(R.drawable.huy_blue_bg_2);
+                settingOpen.setColorFilter(Color.parseColor("#FFFFFF"), PorterDuff.Mode.SRC_IN);
+                audio.setColorFilter(Color.parseColor("#FFFFFF"), PorterDuff.Mode.SRC_IN);
+                noAudio.setColorFilter(Color.parseColor("#FFFFFF"), PorterDuff.Mode.SRC_IN);
+                hint.setColorFilter(Color.parseColor("#FFFFFF"), PorterDuff.Mode.SRC_IN);
+                backToSudokuMenu.setColorFilter(Color.parseColor("#FFFFFF"), PorterDuff.Mode.SRC_IN);
+                timerTextView.setTextColor(Color.parseColor("#FFFFFF"));
+            } else if (sharedPreferences.getString("bg" ,null).equals("yellow")) {
+                main.setBackgroundResource(R.drawable.huy_yellow_bg);
+                settingOpen.setColorFilter(Color.parseColor("#000000"), PorterDuff.Mode.SRC_IN);
+                audio.setColorFilter(Color.parseColor("#000000"), PorterDuff.Mode.SRC_IN);
+                noAudio.setColorFilter(Color.parseColor("#000000"), PorterDuff.Mode.SRC_IN);
+                hint.setColorFilter(Color.parseColor("#000000"), PorterDuff.Mode.SRC_IN);
+                backToSudokuMenu.setColorFilter(Color.parseColor("#000000"), PorterDuff.Mode.SRC_IN);
+                timerTextView.setTextColor(Color.parseColor("#000000"));
+            } else if (sharedPreferences.getString("bg" ,null).equals("red")) {
+                main.setBackgroundResource(R.drawable.huy_red_bg);
+                settingOpen.setColorFilter(Color.parseColor("#FFFFFF"), PorterDuff.Mode.SRC_IN);
+                audio.setColorFilter(Color.parseColor("#FFFFFF"), PorterDuff.Mode.SRC_IN);
+                noAudio.setColorFilter(Color.parseColor("#FFFFFF"), PorterDuff.Mode.SRC_IN);
+                hint.setColorFilter(Color.parseColor("#FFFFFF"), PorterDuff.Mode.SRC_IN);
+                backToSudokuMenu.setColorFilter(Color.parseColor("#FFFFFF"), PorterDuff.Mode.SRC_IN);
+                timerTextView.setTextColor(Color.parseColor("#FFFFFF"));
+            }else if (sharedPreferences.getString("bg" ,null).equals("green")) {
+                main.setBackgroundResource(R.drawable.huy_green_bg);
+                settingOpen.setColorFilter(Color.parseColor("#FFFFFF"), PorterDuff.Mode.SRC_IN);
+                audio.setColorFilter(Color.parseColor("#FFFFFF"), PorterDuff.Mode.SRC_IN);
+                noAudio.setColorFilter(Color.parseColor("#FFFFFF"), PorterDuff.Mode.SRC_IN);
+                hint.setColorFilter(Color.parseColor("#FFFFFF"), PorterDuff.Mode.SRC_IN);
+                backToSudokuMenu.setColorFilter(Color.parseColor("#FFFFFF"), PorterDuff.Mode.SRC_IN);
+                timerTextView.setTextColor(Color.parseColor("#FFFFFF"));
+            }else if (sharedPreferences.getString("bg" ,null).equals("white")) {
+                main.setBackgroundColor(Color.parseColor("#FFFFFF"));
+                settingOpen.setColorFilter(Color.parseColor("#000000"), PorterDuff.Mode.SRC_IN);
+                audio.setColorFilter(Color.parseColor("#000000"), PorterDuff.Mode.SRC_IN);
+                noAudio.setColorFilter(Color.parseColor("#000000"), PorterDuff.Mode.SRC_IN);
+                hint.setColorFilter(Color.parseColor("#000000"), PorterDuff.Mode.SRC_IN);
+                backToSudokuMenu.setColorFilter(Color.parseColor("#000000"), PorterDuff.Mode.SRC_IN);
+                timerTextView.setTextColor(Color.parseColor("#000000"));
+                editor.putString("bg", "white");
+                editor.apply();
+            }
+        } 
         tv_hint_count.setText(String.valueOf(hint_count));
-
 
         //Lấy dữ liệu về độ khó
         int lvl_count = Integer.parseInt(Objects.requireNonNull(intent.getStringExtra("count")));
@@ -183,6 +249,7 @@ public class Sudoku extends AppCompatActivity {
 
         // Tạo gridlayout
         GridLayout sudokuGrid = new GridLayout(this);
+        //setting giá trị cho grid
         sudokuGrid.setLayoutParams(new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT,
                 LinearLayout.LayoutParams.MATCH_PARENT
@@ -204,6 +271,7 @@ public class Sudoku extends AppCompatActivity {
         backToSudokuMenu.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                onPause(sudokuGrid);
                 SharedPreferences.Editor editor = sharedPreferences.edit();
                 // Chuyển mảng thành JSONArray
                 JSONArray jsonArray2 = new JSONArray();
@@ -270,7 +338,6 @@ public class Sudoku extends AppCompatActivity {
                     }
                 }
                 hint_count--;
-
                 editor.putInt("hint_count_save", hint_count);
                 editor.apply();
                 tv_hint_count.setText(String.valueOf(hint_count));
@@ -460,6 +527,7 @@ public class Sudoku extends AppCompatActivity {
                 sudokuGrid.addView(editText);
             }
         }
+        onResume(sudokuGrid);
         LinearLayout mainLayout = findViewById(R.id.main_layout);
         mainLayout.addView(sudokuGrid);
         //Gán giá trị cho mảng để kiểm tra
@@ -510,6 +578,7 @@ public class Sudoku extends AppCompatActivity {
                 if(continueCells[row][col] == 0){
                     sudokuCells[row][col].setText("");
                     sudokuCells[row][col].setEnabled(true);
+                    sudokuCells[row][col].setTextColor(Color.BLUE);
                 }else{
                     sudokuCells[row][col].setText(String.valueOf(continueCells[row][col]));
                 }
@@ -659,6 +728,7 @@ public class Sudoku extends AppCompatActivity {
             if (!sudokuCells[i][j].getText().toString().isEmpty()) {
                 sudokuCells[i][j].setText(""); // Xóa giá trị của ô, làm trống ô đó
                 sudokuCells[i][j].setEnabled(true);
+                sudokuCells[i][j].setTextColor(Color.BLUE);
                 count--; // Giảm số lượng ô cần xóa
             }
         }
@@ -671,4 +741,40 @@ public class Sudoku extends AppCompatActivity {
             countDownTimer.cancel();
         }
     }
+
+    protected void onPause(GridLayout sudokuGrid) {
+        super.onPause();
+
+        SharedPreferences preferences = getSharedPreferences("sudoku_state", MODE_PRIVATE);
+        SharedPreferences.Editor editor = preferences.edit();
+
+        for (int i = 0; i < sudokuGrid.getChildCount(); i++) {
+            View view = sudokuGrid.getChildAt(i);
+            if (view instanceof EditText) {
+                EditText editText = (EditText) view;
+                editor.putBoolean("edittext_" + i + "_enabled", editText.isEnabled());
+            }
+        }
+        editor.apply();
+    }
+
+    protected void onResume(GridLayout sudokuGrid) {
+        super.onResume();
+
+        SharedPreferences preferences = getSharedPreferences("sudoku_state", MODE_PRIVATE);
+
+        for (int i = 0; i < sudokuGrid.getChildCount(); i++) {
+            View view = sudokuGrid.getChildAt(i);
+            if (view instanceof EditText) {
+                EditText editText = (EditText) view;
+                boolean isEnabled = preferences.getBoolean("edittext_" + i + "_enabled", true);
+                editText.setEnabled(isEnabled);
+                // Nếu ô được bật (enabled = true), đặt màu chữ là xanh dương
+                if (isEnabled) {
+                    editText.setTextColor(Color.BLUE);
+                }
+            }
+        }
+    }
+
 }
