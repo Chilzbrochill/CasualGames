@@ -146,10 +146,12 @@ public class tictactoe extends AppCompatActivity {
                 player1Turn = !player1Turn;
                 checkWinner();
             } else {
-                button.setTextColor(Color.TRANSPARENT);
-                button.setText("X");
-                button.setForeground(ContextCompat.getDrawable(this, R.drawable.an_x));
-                player1Turn = false;
+                if (player1Turn) {
+                    button.setTextColor(Color.TRANSPARENT);
+                    button.setText("X");
+                    button.setForeground(ContextCompat.getDrawable(this, R.drawable.an_x));
+                    player1Turn = false;
+                }
                 if (!checkWinner() && !player1Turn) {
                     Handler handler = new Handler();
                     handler.postDelayed(new Runnable() {
@@ -157,7 +159,7 @@ public class tictactoe extends AppCompatActivity {
                         public void run() {
                             aiMove();
                         }
-                    }, 500);
+                    }, 100);
                 }
             }
         }
