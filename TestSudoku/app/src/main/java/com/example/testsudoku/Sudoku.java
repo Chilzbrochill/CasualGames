@@ -81,8 +81,21 @@ public class Sudoku extends AppCompatActivity {
         Button bg_red = findViewById(R.id.btn_red);
         Button bg_white = findViewById(R.id.btn_white);
         TextView tv_hint_count = findViewById(R.id.tv_hint_count);
+        timerTextView = findViewById(R.id.tv_timer);
+        Intent intent = getIntent();
 
-
+        // Tạo gridlayout
+        GridLayout sudokuGrid = new GridLayout(this);
+        //setting giá trị cho grid
+        sudokuGrid.setLayoutParams(new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.MATCH_PARENT
+        ));
+        //Cài đặt các thuộc tính cho grid
+        sudokuGrid.setColumnCount(9); // Số cột là 9 cho ván Sudoku 9x9
+        sudokuGrid.setRowCount(9);    // Số hàng là 9 cho ván Sudoku 9x9
+        sudokuGrid.setBackgroundColor(Color.parseColor("#FFFFFF")); // Màu nền trắng
+        sudokuGrid.setBackgroundResource(R.drawable.sudoku_grid_border); // Border cho grid
         SharedPreferences sharedPreferences = getSharedPreferences("HuyPrefs", MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
 
@@ -101,6 +114,7 @@ public class Sudoku extends AppCompatActivity {
             }
         });
 
+        //Xử lý sự kiện đổi bg
         bg_blue.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -172,13 +186,12 @@ public class Sudoku extends AppCompatActivity {
             }
         });
 
-        timerTextView = findViewById(R.id.tv_timer);
         mediaPlayer = MediaPlayer.create(this, R.raw.huy_bgm1);
         // Thiết lập phát nhạc lặp lại
         mediaPlayer.setLooping(true);
         if (mediaPlayer != null) {
             mediaPlayer.start();  // Phát âm thanh
-        } Intent intent = getIntent();
+        }
         //Lấy dữ liệu về lệnh chơi hay tiếp tục
         String play_command = intent.getStringExtra("play");
 
@@ -189,6 +202,8 @@ public class Sudoku extends AppCompatActivity {
         }else {
             hint_count = sharedPreferences.getInt("hint_count_save", 3);
         }
+
+        //Xử lý sự kiện lưu bg
         if (sharedPreferences.contains("bg")){
             if(sharedPreferences.getString("bg" ,null).equals("blue")){
                 main.setBackgroundResource(R.drawable.huy_blue_bg_2);
@@ -238,7 +253,6 @@ public class Sudoku extends AppCompatActivity {
 
         //Lấy dữ liệu về độ khó
         int lvl_count = Integer.parseInt(Objects.requireNonNull(intent.getStringExtra("count")));
-
         if(lvl_count == 30){
             level = "Dễ";
         } else if (lvl_count == 40) {
@@ -247,19 +261,7 @@ public class Sudoku extends AppCompatActivity {
             level = "Khó";
         }
 
-        // Tạo gridlayout
-        GridLayout sudokuGrid = new GridLayout(this);
-        //setting giá trị cho grid
-        sudokuGrid.setLayoutParams(new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.MATCH_PARENT,
-                LinearLayout.LayoutParams.MATCH_PARENT
-        ));
-        //Cài đặt các thuộc tính cho grid
-        sudokuGrid.setColumnCount(9); // Số cột là 9 cho ván Sudoku 9x9
-        sudokuGrid.setRowCount(9);    // Số hàng là 9 cho ván Sudoku 9x9
-        sudokuGrid.setBackgroundColor(Color.parseColor("#FFFFFF")); // Màu nền trắng
-        sudokuGrid.setBackgroundResource(R.drawable.sudoku_grid_border); // Border cho grid
-
+        //Thiết lập chế độ chơi: Chơi mới hoặc tiếp tục
         if(play_command.equals("new")){
             makeNewGame(sudokuGrid, lvl_count);
         }
@@ -316,6 +318,7 @@ public class Sudoku extends AppCompatActivity {
                 finish();
             }
         });
+        //Xử lý chức năng gợi ý
         hint.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -343,6 +346,7 @@ public class Sudoku extends AppCompatActivity {
                 tv_hint_count.setText(String.valueOf(hint_count));
             }
         });
+        //Xử lý chức năng bật tắt âm thanh
         audio.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -367,8 +371,7 @@ public class Sudoku extends AppCompatActivity {
             }
         });
     }
-
-    //Tạo ván mới
+    //Hàm tạo ván mới
     private void makeNewGame(GridLayout sudokuGrid, int lvl_count){
         // Thêm các EditText vào GridLayout
         for (int row = 0; row < 9; row++) {
@@ -455,7 +458,7 @@ public class Sudoku extends AppCompatActivity {
         //Bắt đầu đếm giờ
         startTimer();
     }
-    //Tiếp tục ván đang chơi
+    //Hàm tiếp tục ván đang chơi
     private void continueGame(GridLayout sudokuGrid, int lvl_count, SharedPreferences sharedPreferences){
         //Đọc mảng từ cục bộ
         for (int row = 0; row < 9; row++) {
@@ -741,7 +744,7 @@ public class Sudoku extends AppCompatActivity {
             countDownTimer.cancel();
         }
     }
-
+    //Hàm xử lý enable cho edittext
     protected void onPause(GridLayout sudokuGrid) {
         super.onPause();
 
@@ -757,7 +760,6 @@ public class Sudoku extends AppCompatActivity {
         }
         editor.apply();
     }
-
     protected void onResume(GridLayout sudokuGrid) {
         super.onResume();
 
@@ -776,5 +778,4 @@ public class Sudoku extends AppCompatActivity {
             }
         }
     }
-
 }

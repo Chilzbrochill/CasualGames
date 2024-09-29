@@ -46,6 +46,7 @@ public class SudokuMenu extends AppCompatActivity {
             status_continue = iGet.getStringExtra("continue_status");
         }
         SharedPreferences sharedPreferences = getSharedPreferences("MyPrefs", MODE_PRIVATE);
+        
         //Ghi dữ liệu vào cục bộ
         SharedPreferences.Editor editor = sharedPreferences.edit();
         if(iGet.hasExtra("reset") && iGet.getStringExtra("reset").equals("1")){
@@ -56,6 +57,7 @@ public class SudokuMenu extends AppCompatActivity {
             status_continue = sharedPreferences.getString("continue_status", "");
         }
 
+        //Xử lý hiển thị nút tiếp tục
         if(status_continue.equals("continue")){
             continueSudoku.setVisibility(View.VISIBLE);
             editor.putString("continue_status", status_continue);
@@ -83,6 +85,7 @@ public class SudokuMenu extends AppCompatActivity {
 
         highest_point_tv.setText("Điểm cao nhất : " + highest_point);
 
+        //Xử lý sự kiện tiếp tục game
         continueSudoku.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -91,7 +94,7 @@ public class SudokuMenu extends AppCompatActivity {
                 startActivity(i);
             }
         });
-
+        //Xử lý sự kiện bấm chơi mới
         newGame.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -130,6 +133,7 @@ public class SudokuMenu extends AppCompatActivity {
         });
         Animation slideDown = AnimationUtils.loadAnimation(this, R.anim.slide_down);
         opacityView = findViewById(R.id.backgroundOverlay);
+        //Xử lý sự kiện bấm vào vùng màu xám
         opacityView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -138,6 +142,7 @@ public class SudokuMenu extends AppCompatActivity {
                 opacityView.setVisibility(View.INVISIBLE);
             }
         });
+        //Xử lý sự kiện quay lại Menu
         quitSudoku.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -147,6 +152,7 @@ public class SudokuMenu extends AppCompatActivity {
             }
         });
     }
+    //Hàm hiển thị độ khó
     private void showDifficultyLayout() {
         Animation slideUp = AnimationUtils.loadAnimation(this, R.anim.slide_up);
         opacityView = findViewById(R.id.backgroundOverlay);
