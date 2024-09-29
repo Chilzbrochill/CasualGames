@@ -11,6 +11,7 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
@@ -20,6 +21,8 @@ import androidx.core.view.WindowInsetsCompat;
 
 public class trong_viewAddQuesActivity extends AppCompatActivity {
     private static final int PICK_IMGAGE_REQUEST = 1;  //Định nghĩa mã yêu cầu để xác định hành động chọn ảnh
+    private static final int REQUEST_STORAGE_PERMISSION = 100;
+
     private ImageView imgView;
     private Uri ImageUri;
     private EditText edQuestion, edAnswer, edHint;
@@ -58,9 +61,16 @@ public class trong_viewAddQuesActivity extends AppCompatActivity {
     // Nếu chưa có, nó sẽ yêu cầu quyền truy cập.
     // Nếu đã có quyền, nó sẽ gọi phương thức openImagePicker để mở giao diện chọn ảnh.
     private void chooseImage() {
-        if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.READ_EXTERNAL_STORAGE) != android.content.pm.PackageManager.PERMISSION_GRANTED) {
-            androidx.core.app.ActivityCompat.requestPermissions(this, new String[]{android.Manifest.permission.READ_EXTERNAL_STORAGE}, PICK_IMGAGE_REQUEST);
+        if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.READ_EXTERNAL_STORAGE)
+                != android.content.pm.PackageManager.PERMISSION_GRANTED) {
+            // Yêu cầu quyền truy cập bộ nhớ ngoài nếu chưa được cấp
+            androidx.core.app.ActivityCompat.requestPermissions(
+                    trong_viewAddQuesActivity.this,
+                    new String[]{android.Manifest.permission.READ_EXTERNAL_STORAGE},
+                    REQUEST_STORAGE_PERMISSION
+            );
         } else {
+            // Nếu đã có quyền, mở trình chọn ảnh
             openImgaePick();
         }
     }
@@ -72,6 +82,21 @@ public class trong_viewAddQuesActivity extends AppCompatActivity {
         intent.setType("image/*");// Chỉ định loại dữ liệu là ảnh
         intent.setAction(Intent.ACTION_OPEN_DOCUMENT);// Sử dụng hành động để mở tài liệu
         startActivityForResult(Intent.createChooser(intent, "Chọn ảnh"), PICK_IMGAGE_REQUEST);
+    }
+
+    // Phương thức xử lý kết quả khi người dùng cấp quyền hoặc từ chối quyền
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == REQUEST_STORAGE_PERMISSION) {
+            if (grantResults.length > 0 && grantResults[0] == android.content.pm.PackageManager.PERMISSION_GRANTED) {
+                // Nếu quyền được cấp, mở trình chọn ảnh
+                openImgaePick();
+            } else {
+                // Nếu quyền bị từ chối, hiển thị thông báo
+                Toast.makeText(this, "Quyền truy cập bộ nhớ đã bị từ chối", Toast.LENGTH_SHORT).show();
+            }
+        }
     }
 
     //Phương thức này được gọi khi người dùng đã chọn ảnh. Nếu ảnh đã được chọn thành công,
